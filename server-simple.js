@@ -17,6 +17,17 @@ require('dotenv').config();
 
 const app = express();
 const server = http.createServer(app);
+
+// Configuration pour servir les fichiers statiques
+app.use(express.static(path.join(__dirname, 'public'), {
+  maxAge: '1d',
+  setHeaders: (res, path) => {
+    // Désactive le cache pour les fichiers HTML en développement
+    if (process.env.NODE_ENV === 'development' && path.endsWith('.html')) {
+      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    }
+  }
+}));
 const io = socketIo(server, {
   cors: {
     origin: process.env.NODE_ENV === 'production' ? false : "http://localhost:3000",
@@ -65,28 +76,32 @@ async function saveUsers() {
   }
 }
 
+// Configuration de sécurité Helmet simplifiée pour le développement
 app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com", "https://cdnjs.cloudflare.com"],
-      fontSrc: ["'self'", "https://fonts.gstatic.com", "https://cdnjs.cloudflare.com"],
-      scriptSrc: ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net"],
-      imgSrc: ["'self'", "data:", "https://ui-avatars.com"],
-      connectSrc: ["'self'", "ws:", "wss:"]
-    }
-  }
+  contentSecurityPolicy: false // Désactive temporairement la CSP stricte
 }));
 
-app.use(cors());
-app.use(compression());
-app.use(morgan('combined'));
+// Configuration CORS plus permissive pour le développement
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 100
+app.use(compression());
+app.use(morgan('dev')); // Format plus lisible pour le développement
+
+// Configuration du rate limiting uniquement pour les routes API
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limite chaque IP à 100 requêtes par fenêtre
+  message: 'Trop de requêtes depuis cette adresse IP, veuillez réessayer plus tard.'
 });
-app.use(limiter);
+
+// Applique le rate limiting uniquement aux routes API
+app.use('/api', apiLimiter);
+app.use('/auth', apiLimiter);
+app.use('/paypal', apiLimiter);
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
