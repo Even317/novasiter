@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Commande • Novaxell</title>
+  <link rel="icon" href="public/img/logo.png" type="image/png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+
+  <style>
+    :root {
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --accent: #ec4899;
+      --surface: #0b1220;
+      --surface-2: #0f172a;
+      --muted: #9ca3af;
+      --light: #e5e7eb;
+      --success: #22c55e;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--light);
+      background:
+        radial-gradient(900px 600px at 15% -10%, rgba(30,64,175,.35), transparent 60%),
+        radial-gradient(900px 600px at 110% 110%, rgba(88,28,135,.28), transparent 60%),
+        linear-gradient(145deg, #020617 0%, #020617 40%, #020617 100%);
+    }
+
+    /* Particles background */
+    #particles-js { position: fixed; inset: 0; z-index: -1; }
+
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(14px);
+      background: rgba(2,6,23,.6);
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+    .header-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 14px 16px;
+      display: flex; align-items: center; justify-content: center; position: relative;
+    }
+    .logo { display: inline-flex; gap: 10px; align-items: center; text-decoration: none; }
+    .logo i { color: var(--primary); }
+    .logo span {
+      font-weight: 800; letter-spacing: .4px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .back-btn { position: absolute; left: 12px; top: 10px; width: 40px; height: 40px; border-radius: 999px; border: 1px solid rgba(255,255,255,.12); background: rgba(2,6,23,.6); color: var(--light); cursor:pointer; display:inline-flex; align-items:center; justify-content:center; }
+    .back-btn:hover { background: rgba(37,99,235,.25); }
+
+    .page {
+      max-width: 1380px;
+      margin: 36px auto 0;
+      padding: 0 28px 40px;
+      display: grid;
+      grid-template-columns: minmax(0,1.05fr) minmax(0,1.25fr);
+      gap: 36px;
+      min-height: calc(100vh - 104px);
+      position: relative;
+    }
+    @media (max-width: 1024px) {
+      .page {
+        grid-template-columns: 1fr;
+        gap: 28px;
+        padding: 8px 16px 32px;
+        min-height: auto;
+      }
+    }
+
+    /* Left: order summary */
+    .summary {
+      background: rgba(15,23,42,.98);
+      border: 1px solid rgba(15,23,42,1);
+      border-radius: 20px;
+      overflow: hidden;
+      display:flex;
+      flex-direction:column;
+      position: relative;
+      box-shadow: 0 24px 60px rgba(0,0,0,.7);
+      min-height: 520px;
+    }
+    .summary-header { padding: 18px 20px; border-bottom: 1px solid rgba(255,255,255,.06); display:flex; align-items:center; gap:10px; font-size: 1rem; }
+    .summary-header i { color: var(--primary); }
+    .summary-body { padding: 14px 18px 18px; display: grid; gap: 12px; overflow: auto; }
+
+    .item-row { display:grid; grid-template-columns:auto 1fr auto; gap:12px; align-items:center; background: rgba(2,6,23,.5); border:1px solid rgba(255,255,255,.07); border-radius:14px; padding:12px 14px; }
+    .item-row img { width: 52px; height: 52px; border-radius: 12px; object-fit: cover; display: block; }
+    .item-title { font-weight: 700; font-size: 1rem; }
+    .item-sub { color: var(--muted); font-size: .86rem; }
+    .item-price { font-weight: 700; font-size: 1rem; }
+
+    .summary-totals { border-top:1px dashed rgba(15,23,42,.8); padding-top: 12px; margin-top: 4px; display:grid; gap:8px; font-size: .95rem; }
+    .row { display:flex; align-items:center; justify-content: space-between; }
+    .total { font-size: 1.2rem; font-weight: 800; }
+
+    /* Right: checkout steps */
+    .panel {
+      background: rgba(15,23,42,.98);
+      border: 1px solid rgba(15,23,42,1);
+      border-radius: 20px;
+      overflow: hidden;
+      display:flex;
+      flex-direction:column;
+      position: relative;
+      box-shadow: 0 24px 60px rgba(0,0,0,.7);
+      min-height: 520px;
+    }
+    .steps {
+      display:flex;
+      gap:22px;
+      padding:14px 22px 10px;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      font-size: .95rem;
+    }
+    .step {
+      font-weight:650;
+      opacity:.55;
+      position:relative;
+      padding-bottom:6px;
+      cursor: default;
+    }
+    .step.active { opacity:1; }
+    .step.active::after {
+      content:'';
+      position:absolute;
+      left:0;
+      right:0;
+      bottom:-3px;
+      height:3px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      border-radius:999px;
+    }
+
+    .panel-body { padding: 16px 22px 18px; display:grid; gap:14px; overflow:auto; }
+    .field { display:grid; gap:8px; }
+    .label { font-weight: 600; font-size: .95rem; }
+    .input, .select {
+      background: rgba(2,6,23,.7);
+      border: 1px solid rgba(255,255,255,.12);
+      color: var(--light);
+      border-radius: 12px; padding: 13px 14px; font-size: 1rem;
+      outline: none;
+    }
+    .two-col { display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
+    @media (max-width: 520px) { .two-col { grid-template-columns: 1fr; } }
+
+    .paymethods { display:grid; gap:8px; }
+    .method {
+      background: rgba(2,6,23,.6);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 12px;
+      padding: 12px 14px;
+      display:flex; align-items:center; justify-content:space-between; cursor:pointer;
+      font-size: .95rem;
+    }
+    .method.active { border-color: rgba(99,102,241,.6); box-shadow: 0 0 0 2px rgba(99,102,241,.25) inset; }
+    .agree { display:flex; gap:10px; align-items:flex-start; font-size:.92rem; color: var(--muted); }
+
+    .cta {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      border: none; color: white; font-weight: 700; letter-spacing:.1px;
+      border-radius: 12px; padding: 12px 16px; cursor: pointer; width: 100%;
+      box-shadow: 0 16px 34px rgba(99,102,241,.35);
+      font-size: 1rem;
+    }
+    .cta:disabled { opacity: .6; cursor: not-allowed; }
+
+    .footer-note { text-align:center; color: var(--muted); font-size:.85rem; padding: 16px; }
+
+    .chip { background: rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.12); border-radius:999px; padding:6px 10px; font-size:.8rem; color:var(--light); }
+
+    .currency-row { display:flex; align-items:center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+    .currency-pill {
+      position: relative;
+      display:inline-flex;
+      align-items:center;
+      justify-content: space-between;
+      gap:8px;
+      padding:6px 12px;
+      border-radius:999px;
+      background: radial-gradient(circle at top left, rgba(79,70,229,0.45), transparent 60%), rgba(15,23,42,0.98);
+      border:1px solid rgba(129,140,248,0.7);
+      font-size:.85rem;
+      color: var(--light);
+      cursor: pointer;
+      min-width: 150px;
+    }
+    .currency-current {
+      display:flex;
+      align-items:center;
+      gap:6px;
+      white-space: nowrap;
+    }
+    .currency-pill i { font-size:.7rem; opacity:.9; }
+    .currency-menu {
+      position:absolute;
+      left:0;
+      right:0;
+      top: calc(100% + 6px);
+      background: rgba(15,23,42,0.98);
+      border-radius: 14px;
+      border:1px solid rgba(31,41,55,0.95);
+      box-shadow: 0 18px 40px rgba(0,0,0,.8);
+      padding:6px;
+      display:none;
+      z-index: 20;
+    }
+    .currency-menu.open { display:block; }
+    .currency-menu button {
+      width:100%;
+      border:none;
+      background: transparent;
+      color: var(--light);
+      text-align:left;
+      padding:7px 8px;
+      border-radius:10px;
+      font-size:.85rem;
+      cursor:pointer;
+    }
+    .currency-menu button:hover {
+      background: rgba(79,70,229,0.25);
+    }
+
+    /* Lignes de séparation centrales sans effet de carte/modale */
+
+    /* Bottom fade inside panels */
+    .summary::after, .panel::after { display:none; }
+    .panel-body, .summary-body { z-index: 1; }
+
+    .checkout-footer-global { text-align:center; color: var(--muted); font-size:.85rem; padding: 10px 16px 18px; }
+
+    footer {
+      background: rgba(2, 6, 23, 0.85);
+      border-top: 1px solid rgba(148, 163, 184, 0.25);
+      padding: 16px 12px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    /* Modale plein écran après commande */
+    .checkout-overlay {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at top, rgba(15,23,42,0.94), rgba(2,6,23,0.98));
+      backdrop-filter: blur(22px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 80;
+      padding: 1.5rem;
+    }
+    .checkout-overlay.active { display:flex; }
+
+    .checkout-modal {
+      max-width: 540px;
+      width: 100%;
+      background: rgba(15,23,42,0.98);
+      border-radius: 20px;
+      border: 1px solid rgba(148,163,184,0.5);
+      box-shadow: 0 30px 80px rgba(0,0,0,0.85);
+      padding: 1.6rem 1.8rem 1.5rem;
+      text-align: center;
+    }
+
+    .checkout-modal h2 {
+      font-size: 1.4rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .checkout-modal p {
+      font-size: 0.95rem;
+      color: var(--muted);
+      margin-bottom: 1.3rem;
+    }
+
+    .checkout-modal .discord-main-btn {
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:0.6rem;
+      padding: 12px 22px;
+      border-radius: 999px;
+      border:none;
+      cursor:pointer;
+      background: linear-gradient(135deg,#5865F2,#4752C4);
+      color:white;
+      font-weight:600;
+      font-size:0.95rem;
+      box-shadow:0 18px 40px rgba(88,101,242,0.55);
+      text-decoration:none;
+    }
+
+    .checkout-modal .discord-main-btn i { font-size:1rem; }
+
+    .checkout-modal small {
+      display:block;
+      margin-top:0.7rem;
+      font-size:0.8rem;
+      color:var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <button class="back-btn" onclick="window.history.back()" aria-label="Retour"><i class="fas fa-arrow-left"></i></button>
+      <a class="logo" href="shop.html"><i class="fas fa-bolt"></i><span>Novaxell</span></a>
+    </div>
+
+  <!-- Modale Paiement PayPal (instructions F&F) -->
+  <div class="checkout-overlay" id="paypalOverlay" style="display:none;">
+    <div class="checkout-modal">
+      <h2>Paiement PayPal (Entre proches)</h2>
+      <p style="text-align:left;font-size:0.9rem;line-height:1.5;">
+        <strong>Étapes à suivre :</strong><br>
+        1. Cliquez sur <strong>Ouvrir PayPal</strong>.<br>
+        2. Choisissez l'option <strong>Envoyer à un proche / Friends & Family</strong> pour éviter les frais.<br>
+        3. Entrez l'e-mail ci-dessous comme destinataire.<br>
+        4. Utilise exactement la <strong>note</strong> affichée (elle est unique pour ta commande).<br>
+        5. Vérifie que le <strong>montant</strong> est correct, puis valide le paiement.
+      </p>
+      <div style="display:grid;gap:8px;margin-top:8px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
+          <div class="chip" style="flex:1 1 auto;">Email PayPal : <strong id="ppEmail">even.lespinasse1@gmail.com</strong></div>
+          <button type="button" id="copyEmail" class="discord-main-btn" style="padding:6px 14px;font-size:0.8rem;box-shadow:none;">Copier</button>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
+          <div class="chip" style="flex:1 1 auto;">Montant : <strong id="ppAmount">—</strong></div>
+          <button type="button" id="copyAmount" class="discord-main-btn" style="padding:6px 14px;font-size:0.8rem;box-shadow:none;">Copier</button>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
+          <div class="chip" style="flex:1 1 auto;">Note / Message : <code id="ppNote">—</code></div>
+          <button type="button" id="copyNote" class="discord-main-btn" style="padding:6px 14px;font-size:0.8rem;box-shadow:none;">Copier</button>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;justify-content:center;margin-top:16px;flex-wrap:wrap;">
+        <a href="https://www.paypal.com/myaccount/transfer/homepage/send" target="_blank" rel="noopener" class="discord-main-btn" style="background:linear-gradient(135deg,#003087,#009cde);box-shadow:0 18px 40px rgba(0,156,222,0.45);">
+          <i class="fab fa-paypal"></i>
+          Ouvrir PayPal
+        </a>
+        <button id="ppClose" class="discord-main-btn" style="background:linear-gradient(135deg,#334155,#1f2937);box-shadow:none;">Fermer</button>
+      </div>
+      <div id="ppStatus" style="margin-top:12px;color:#9ca3af;">En attente du paiement...</div>
+    </div>
+  </div>
+  </header>
+
+  <div id="particles-js"></div>
+
+  <main class="page">
+    <!-- LEFT: SUMMARY -->
+    <aside class="summary" id="summary">
+      <div class="summary-header">
+        <i class="fas fa-receipt"></i>
+        <strong>Récapitulatif</strong>
+      </div>
+      <div class="summary-body">
+        <div id="summaryItems" class="items"></div>
+        <div class="summary-totals">
+          <div class="row"><span>Sous-total</span><span id="subtotal">0,00 €</span></div>
+          <div class="row"><span>Frais</span><span id="fees">0,00 €</span></div>
+          <div class="row total"><span>Total</span><span id="total">0,00 €</span></div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- RIGHT: FORM -->
+    <section class="panel">
+      <div class="steps">
+        <div class="step active">Étape 1 · Informations</div>
+        <div class="step">Étape 2 · Paiement</div>
+        <div class="step">Étape 3 · Réception</div>
+      </div>
+      <div class="panel-body">
+        <div class="field">
+          <label class="label">Nom d'utilisateur Discord</label>
+          <input id="discordTag" type="text" class="input" placeholder="ne donne pas ton nom d'affichage" />
+        </div>
+
+        <div class="field">
+          <div class="currency-row">
+            <label class="label" style="margin:0;">Devise</label>
+            <div class="currency-pill" id="currencyDropdown" data-value="EUR">
+              <span class="currency-current" id="currencyCurrent">
+                <span style="opacity:.75; font-size:.8rem;">Devise</span>
+                <strong>EUR (€)</strong>
+              </span>
+              <i class="fas fa-chevron-down"></i>
+              <div class="currency-menu" id="currencyMenu">
+                <button type="button" data-value="EUR">EUR (€)</button>
+                <button type="button" data-value="USD">USD ($)</button>
+                <button type="button" data-value="GBP">GBP (£)</button>
+                <button type="button" data-value="CHF">CHF (Fr)</button>
+                <button type="button" data-value="CAD">CAD ($)</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Méthode de paiement</label>
+          <div class="paymethods" id="methods">
+            <div data-id="paypal" class="method"><span><i class="fab fa-paypal"></i> &nbsp; PayPal</span></div>
+            <div data-id="crypto" class="method"><span><i class="fas fa-coins"></i> &nbsp; Crypto</span></div>
+          </div>
+        </div>
+
+        <label class="agree">
+          <input id="agree" type="checkbox" />
+          <span>
+            J'ai lu et j'accepte
+            <a href="terms.html" style="color:#9ca3af;text-decoration:underline;">termes et Conditions d'utilisation Novaxell</a>.
+          </span>
+        </label>
+
+        <button id="proceed" class="cta" disabled>Procéder au paiement</button>
+
+        <div id="discordFollowup" style="display:none;margin-top:14px;text-align:center;">
+          <a href="https://discord.gg/novaxell" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:999px;border:1px solid rgba(148,163,184,0.5);background:rgba(15,23,42,0.92);color:#e5e7eb;text-decoration:none;font-size:0.9rem;">
+            <i class="fab fa-discord" style="color:#5865f2;"></i>
+            <span>Rejoignez le serveur Discord pour finaliser l'achat</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:1rem;">
+      <p>&copy; 2025 Novaxell. Tous droits réservés.</p>
+      <a href="terms.html" style="color:#9ca3af;text-decoration:none;font-size:0.9rem;">Terms of Service</a>
+    </div>
+  </footer>
+
+  <!-- Modale Discord après la commande -->
+  <div class="checkout-overlay" id="checkoutOverlay">
+    <div class="checkout-modal">
+      <h2>Merci pour votre commande</h2>
+      <p>
+        Pour finaliser le paiement et recevoir vos comptes, rejoignez notre serveur Discord.
+        Un ticket sera automatiquement ouvert par le staff dès votre arrivée.
+      </p>
+      <a href="https://discord.gg/novaxell" target="_blank" rel="noopener" class="discord-main-btn">
+        <i class="fab fa-discord"></i>
+        <span>Rejoindre le serveur Discord</span>
+      </a>
+      <small>Si vous êtes déjà sur le serveur, ouvrez un ticket en mentionnant votre pseudo Discord et votre commande.</small>
+    </div>
+  </div>
+
+  <script>
+    // Webhook Discord Novaxell (pour les commandes)
+    const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1442349621568344064/IF5zExOI4PGYvt_F31QWmHBjJuiHxT8c7R8M4EvEk-vcFYjsaqzeI0AnqGfOhrPVNmko';
+    // API du bot (local par défaut). Si ton bot est ailleurs, remplace par son URL publique.
+    const BOT_ORDER_API_URL = 'http://localhost:5056/order';
+    // Particles.js avec lignes reliées
+    particlesJS('particles-js', {
+      particles: {
+        number: { value: 70, density: { enable: true, value_area: 900 } },
+        color: { value: ['#94a3b8','#60a5fa','#a78bfa'] },
+        shape: { type: 'circle' },
+        opacity: { value: 0.45 },
+        size: { value: 2.5, random: true },
+        line_linked: { enable: true, distance: 140, color: '#48566a', opacity: 0.35, width: 1 },
+        move: { enable: true, speed: 1.1, out_mode: 'out' }
+      },
+      interactivity: {
+        detect_on: 'canvas',
+        events: { onhover: { enable: true, mode: 'grab' }, onclick: { enable: false }, resize: true },
+        modes: { grab: { distance: 160, line_linked: { opacity: 0.5 } } }
+      },
+      retina_detect: true
+    });
+
+
+    const cart = (function(){
+      try { return JSON.parse(localStorage.getItem('novaxell_cart')||'[]') } catch(e){ return [] }
+    })();
+
+    const summaryItems = document.getElementById('summaryItems');
+    const subtotalEl = document.getElementById('subtotal');
+    const feesEl = document.getElementById('fees');
+    const totalEl = document.getElementById('total');
+
+    // gestion des devises
+    const currencyDropdown = document.getElementById('currencyDropdown');
+    const currencyRates = {
+      EUR: 1,
+      USD: 1.15,  // ≈ 1€ = 1.15$
+      GBP: 0.87,
+      CHF: 0.97,
+      CAD: 1.48
+    };
+    const currencySymbols = {
+      EUR: '€',
+      USD: '$',
+      GBP: '£',
+      CHF: 'Fr',
+      CAD: '$'
+    };
+
+    let baseSubtotalEUR = 0;
+    let baseFeesEUR = 0;
+
+    function parsePrice(str){
+      return parseFloat(String(str||'0').replace('€','').replace(/\s/g,'').replace(',','.'))||0;
+    }
+
+    function formatPriceAmount(amount, currency){
+      const sym = currencySymbols[currency] || '€';
+      // arrondi toujours au centime supérieur
+      const rounded = Math.ceil(amount * 100) / 100;
+      return rounded.toFixed(2).replace('.',',') + ' ' + sym;
+    }
+
+    function getCurrentCurrency(){
+      return (currencyDropdown && currencyDropdown.dataset.value) || 'EUR';
+    }
+
+    function renderSummary(){
+      summaryItems.innerHTML = '';
+      let subtotal = 0;
+      cart.forEach(entry => {
+        const price = parsePrice(entry.service.price);
+        const qty = entry.quantity||1;
+        subtotal += price*qty;
+        const row = document.createElement('div');
+        row.className = 'item-row';
+        row.innerHTML = `
+          <img src="${entry.service.img}" alt="${entry.service.name}">
+          <div>
+            <div class="item-title">${entry.service.name}</div>
+            <div class="item-sub">${entry.service.desc||''} · <strong>x${qty}</strong></div>
+          </div>
+          <div class="item-price" data-base-eur="${price*qty}"></div>
+        `;
+        summaryItems.appendChild(row);
+      });
+      const fees = 0; // Frais éventuels (0 par défaut)
+      baseSubtotalEUR = subtotal;
+      baseFeesEUR = fees;
+      applyCurrency();
+    }
+
+    renderSummary();
+
+    // applique la devise sélectionnée sur les montants
+    function applyCurrency(){
+      const cur = getCurrentCurrency();
+      const rate = currencyRates[cur] || 1;
+
+      // lignes
+      document.querySelectorAll('.item-price[data-base-eur]').forEach(el => {
+        const base = parseFloat(el.getAttribute('data-base-eur')||'0') || 0;
+        el.textContent = formatPriceAmount(base*rate, cur);
+      });
+
+      subtotalEl.textContent = formatPriceAmount(baseSubtotalEUR*rate, cur);
+      feesEl.textContent = formatPriceAmount(baseFeesEUR*rate, cur);
+      totalEl.textContent = formatPriceAmount((baseSubtotalEUR+baseFeesEUR)*rate, cur);
+    }
+
+    // (Coupon désactivé sur cette version : le total correspond toujours au panier)
+
+    // Dropdown custom pour la devise
+    (function(){
+      const dropdown = document.getElementById('currencyDropdown');
+      const menu = document.getElementById('currencyMenu');
+      const current = document.getElementById('currencyCurrent');
+      if (!dropdown || !menu || !current) return;
+
+      function setCurrency(value, label) {
+        dropdown.dataset.value = value;
+        current.querySelector('strong').textContent = label;
+        applyCurrency();
+      }
+
+      dropdown.addEventListener('click', function(e) {
+        // si on clique sur un bouton d'option, laisser l'autre handler gérer
+        if (e.target.closest('button[data-value]')) return;
+        menu.classList.toggle('open');
+      });
+
+      menu.querySelectorAll('button[data-value]').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const value = this.getAttribute('data-value');
+          const label = this.textContent.trim();
+          setCurrency(value, label);
+          menu.classList.remove('open');
+        });
+      });
+
+      document.addEventListener('click', function(e) {
+        if (!dropdown.contains(e.target)) {
+          menu.classList.remove('open');
+        }
+      });
+    })();
+
+    // Méthodes de paiement (sélection)
+    document.querySelectorAll('.method').forEach(m => {
+      m.addEventListener('click', () => {
+        document.querySelectorAll('.method').forEach(x => x.classList.remove('active'));
+        m.classList.add('active');
+        validate();
+      });
+    });
+
+    // Enable proceed when pseudo Discord + agree + panier + moyen de paiement sélectionné
+    function validate(){
+      const discordTag = document.getElementById('discordTag').value.trim();
+      const agree = document.getElementById('agree').checked;
+      const hasMethod = !!document.querySelector('.method.active');
+      const ok = discordTag.length >= 2 && agree && cart.length>0 && hasMethod;
+      document.getElementById('proceed').disabled = !ok;
+    }
+    document.getElementById('discordTag').addEventListener('input', validate);
+    document.getElementById('agree').addEventListener('change', validate);
+    validate();
+
+    // Envoi de la commande directement au bot (API locale)
+    async function sendOrderToBot() {
+      try {
+        if (!BOT_ORDER_API_URL) return false;
+        const discordTag = document.getElementById('discordTag').value.trim();
+        const methodEl = document.querySelector('.method.active');
+        const methodId = methodEl ? methodEl.getAttribute('data-id') : 'inconnu';
+        const methodLabel = methodEl ? methodEl.innerText.trim() : 'Méthode inconnue';
+        const currency = getCurrentCurrency();
+        const totalText = totalEl.textContent || '';
+        const items = cart.map(entry => ({
+          name: entry?.service?.name || 'Service',
+          qty: entry?.quantity || 1,
+          price: entry?.service?.price || ''
+        }));
+
+        const res = await fetch(BOT_ORDER_API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            discordTag,
+            payment: `${methodLabel} (id=${methodId})`,
+            currency,
+            total: totalText,
+            items
+          })
+        });
+        if (!res.ok) return false;
+        const data = await res.json().catch(() => ({}));
+        return !!data.ok;
+      } catch (e) {
+        console.warn('API bot non joignable:', e);
+        return false;
+      }
+    }
+
+    // Envoi de la commande vers Discord (fallback via webhook)
+    async function sendOrderToDiscord() {
+      if (!DISCORD_WEBHOOK_URL) {
+        console.warn('Webhook Discord non configuré.');
+        return false;
+      }
+
+      const discordTag = document.getElementById('discordTag').value.trim();
+      const methodEl = document.querySelector('.method.active');
+      const methodId = methodEl ? methodEl.getAttribute('data-id') : 'inconnu';
+      const methodLabel = methodEl ? methodEl.innerText.trim() : 'Méthode inconnue';
+      const currency = getCurrentCurrency();
+      const totalText = totalEl.textContent || '';
+
+      const lines = cart.map(entry => {
+        const qty = entry.quantity || 1;
+        const name = entry.service?.name || 'Service';
+        const price = entry.service?.price || '';
+        return `- ${qty}x ${name} (${price})`;
+      });
+
+      const content = [
+        '**Nouvelle commande Novaxell**',
+        `Client Discord: ${discordTag}`,
+        `Moyen de paiement: ${methodLabel} (id=${methodId})`,
+        `Devise: ${currency}`,
+        `Total affiché: ${totalText}`,
+        '',
+        '**Détails panier :**',
+        lines.join('\n') || 'Aucun article',
+        '',
+        'Créer un ticket pour ce client ?'
+      ].join('\n');
+
+      try {
+        const res = await fetch(DISCORD_WEBHOOK_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ content })
+        });
+        return res.ok;
+      } catch (e) {
+        console.error('Erreur envoi webhook Discord:', e);
+        return false;
+      }
+    }
+
+    // Proceed: selon la méthode
+    document.getElementById('proceed').addEventListener('click', async () => {
+      const btn = document.getElementById('proceed');
+      const overlay = document.getElementById('checkoutOverlay');
+      const paypalOverlay = document.getElementById('paypalOverlay');
+      btn.disabled = true;
+      const originalText = btn.textContent;
+      btn.textContent = 'Envoi de votre commande...';
+
+      const methodEl = document.querySelector('.method.active');
+      const methodId = methodEl ? methodEl.getAttribute('data-id') : 'inconnu';
+
+      // Helper pour total numérique (point) et affichage formaté existant
+      const cur = getCurrentCurrency();
+      const rate = currencyRates[cur] || 1;
+      const gross = Math.ceil((baseSubtotalEUR+baseFeesEUR)*rate*100)/100;
+      const grossStr = gross.toFixed(2); // pour IPN (mc_gross)
+
+      if (methodId === 'paypal') {
+        // Générer un orderId simple et l'enregistrer côté serveur
+        const orderId = 'ORD-' + Date.now() + '-' + Math.floor(Math.random()*10000);
+        const discordTag = document.getElementById('discordTag').value.trim();
+        try {
+          await fetch('/orders/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ orderId, discordTag, total: grossStr, currency: cur })
+          });
+        } catch(e) {}
+
+        // Remplir l'overlay PayPal et afficher
+        document.getElementById('ppAmount').textContent = `${totalEl.textContent}`;
+        document.getElementById('ppNote').textContent = orderId;
+        if (paypalOverlay) paypalOverlay.style.display = 'flex';
+        document.getElementById('ppClose').onclick = () => { paypalOverlay.style.display = 'none'; };
+
+        // Boutons copier
+        const emailText = document.getElementById('ppEmail').textContent.trim();
+        document.getElementById('copyEmail').onclick = async () => {
+          try { await navigator.clipboard.writeText(emailText); } catch(e) {}
+        };
+        document.getElementById('copyAmount').onclick = async () => {
+          try { await navigator.clipboard.writeText(document.getElementById('ppAmount').textContent.trim()); } catch(e) {}
+        };
+        document.getElementById('copyNote').onclick = async () => {
+          try { await navigator.clipboard.writeText(document.getElementById('ppNote').textContent.trim()); } catch(e) {}
+        };
+
+        btn.textContent = 'Instructions affichées';
+        btn.disabled = false;
+
+        // Polling statut IPN
+        let tries = 0;
+        const timer = setInterval(async () => {
+          tries++;
+          try {
+            const res = await fetch(`/orders/status?orderId=${encodeURIComponent(orderId)}`);
+            if (res.ok) {
+              const data = await res.json();
+              if (data.status === 'paid') {
+                clearInterval(timer);
+                document.getElementById('ppStatus').textContent = "c'est bon tiens";
+              }
+            }
+          } catch(e) {}
+          if (tries > 120) { // ~12 minutes à 6s si on augmente l'intervalle
+            clearInterval(timer);
+          }
+        }, 6000);
+        return;
+      }
+
+      // Sinon (Crypto etc.): envoyer vers bot/webhook + ouvrir modale Discord
+      let ok = await sendOrderToBot();
+      if (!ok) {
+        ok = await sendOrderToDiscord();
+      }
+
+      btn.textContent = ok ? 'Commande envoyée' : originalText;
+      if (!ok) {
+        btn.disabled = false;
+        return;
+      }
+
+      if (overlay) {
+        overlay.classList.add('active');
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Auth - Novaxell</title>
+    <link rel="icon" href="public/img/logo.png" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <link rel="stylesheet" href="auth-modal.css">
+    <script src="auth-modal.js" defer></script>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --accent: #ec4899;
+            --dark: #0f172a;
+            --darker: #020617;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --glass: rgba(15, 23, 42, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --gradient: linear-gradient(135deg, var(--primary), var(--accent));
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--darker);
+            color: var(--light);
+            overflow-x: hidden;
+            background-image: radial-gradient(at 80% 0%, hsla(242, 100%, 70%, 0.15) 0px, transparent 50%);
+        }
+        #particles-js { position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: -1; }
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1rem;
+            background: rgba(2, 6, 23, 0.85);
+            backdrop-filter: blur(25px);
+            border-bottom: 1px solid var(--glass-border);
+        }
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 800;
+            font-size: 1.5rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-decoration: none;
+        }
+        .desktop-nav { display: none; }
+        .hamburger { display: flex; flex-direction: column; gap: 4px; background: none; border: none; cursor: pointer; }
+        .hamburger span { width: 25px; height: 3px; background: var(--light); border-radius: 2px; }
+        main {
+            margin-top: 80px;
+            padding: 2rem 1rem;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        .test-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+        .test-card {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(20px);
+        }
+        .test-btn {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+        }
+        .logs {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 0.85rem;
+            color: #10b981;
+        }
+        .log-entry {
+            margin-bottom: 0.5rem;
+            padding: 0.5rem;
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 3px solid #10b981;
+            padding-left: 1rem;
+        }
+        footer {
+            background: rgba(2, 6, 23, 0.85);
+            border-top: 1px solid var(--glass-border);
+            padding: 2rem 1rem;
+            text-align: center;
+            color: var(--gray);
+            margin-top: 4rem;
+        }
+    </style>
+</head>
+<body>
+    <div id="particles-js"></div>
+    <header class="header">
+        <div class="header-content">
+            <a href="index.html" class="logo"><i class="fas fa-bolt"></i> Novaxell</a>
+            <!-- Desktop Navigation -->
+            <nav class="desktop-nav">
+                <div class="desktop-nav-links">
+                    <a href="index.html" class="desktop-nav-link">
+                        <i class="fas fa-home"></i>
+                        Accueil
+                    </a>
+                    <a class="desktop-nav-link" href="shop.html">
+                        <i class="fas fa-shopping-bag"></i>
+                        Boutique
+                    </a>
+                    <a class="desktop-nav-link" href="spotify-guide.html">
+                        <i class="fab fa-apple"></i>
+                        Spotify iOS
+                    </a>
+                    <a class="desktop-nav-link" href="support.html">
+                        <i class="fas fa-headset"></i>
+                        Support
+                    </a>
+                </div>
+            </nav>
+            <button class="hamburger" id="hamburger" onclick="toggleMobileMenu()">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <h1 class="page-title">Test Système d'Auth</h1>
+            <div class="test-grid">
+                <div class="test-card">
+                    <h3>Ouvrir Login</h3>
+                    <button class="test-btn" onclick="openLoginModal()"><i class="fas fa-sign-in-alt"></i> Login</button>
+                </div>
+                <div class="test-card">
+                    <h3>Ouvrir Register</h3>
+                    <button class="test-btn" onclick="openRegisterModal()"><i class="fas fa-user-plus"></i> Register</button>
+                </div>
+                <div class="test-card">
+                    <h3>Vérifier Token</h3>
+                    <button class="test-btn" onclick="checkToken()"><i class="fas fa-check"></i> Vérifier</button>
+                </div>
+                <div class="test-card">
+                    <h3>Effacer Token</h3>
+                    <button class="test-btn" onclick="clearToken()"><i class="fas fa-trash"></i> Effacer</button>
+                </div>
+            </div>
+            <div class="logs" id="logs">
+                <div class="log-entry">Logs du système...</div>
+            </div>
+        </div>
+    </main>
+    <footer><p>&copy; 2025 Novaxell</p></footer>
+    <div id="authModal" class="auth-modal-overlay">
+      <div class="auth-modal-container">
+        <button class="auth-modal-close" id="authModalClose"><i class="fas fa-times"></i></button>
+        <div class="auth-modal-content">
+          <div class="auth-modal-header">
+            <h1 class="auth-modal-title" id="authModalTitle">Connexion</h1>
+          </div>
+          <form id="authForm" class="auth-form">
+            <div class="auth-form-group">
+              <label for="authInput" class="auth-form-label" id="authInputLabel">Code utilisateur</label>
+              <input type="text" id="authInput" class="auth-form-input" placeholder="NOVA-USER123" required />
+            </div>
+            <div class="auth-form-group">
+              <label for="authPassword" class="auth-form-label">Mot de passe</label>
+              <input type="password" id="authPassword" class="auth-form-input" placeholder="••••••••" required />
+            </div>
+            <button type="submit" class="auth-form-submit" id="authSubmitBtn">Se connecter</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <script>
+        function toggleMobileMenu() {}
+        function addLog(msg) {
+            const logs = document.getElementById('logs');
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            entry.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+            logs.appendChild(entry);
+            logs.scrollTop = logs.scrollHeight;
+        }
+        function checkToken() {
+            const token = localStorage.getItem('authToken');
+            addLog(token ? `✓ Token: ${token.substring(0, 20)}...` : '✗ Aucun token');
+        }
+        function clearToken() {
+            localStorage.removeItem('authToken');
+            addLog('✓ Token supprimé');
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            particlesJS.load('particles-js', 'public/json/particles-config.json', function() {
+                console.log('Particles loaded');
+            });
+        });
+    </script>
+</body>
+</html>

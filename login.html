@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion - Novaxell Premium</title>
+    <link rel="icon" href="public/img/logo.png" type="image/png">
+    
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <!-- External Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    
+    <!-- Auth Modal System -->
+    <link rel="stylesheet" href="auth-modal.css">
+    <script src="auth-modal.js" defer></script>
+    
+    <style>
+        /* Variables Ultra-Modernes */
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #f59e0b;
+            --accent: #ec4899;
+            --success: #10b981;
+            --error: #ef4444;
+            --dark: #0f172a;
+            --darker: #020617;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --glass: rgba(15, 23, 42, 0.85);
+            --glass-light: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --gradient: linear-gradient(135deg, var(--primary), var(--accent));
+            --gradient-alt: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            --shadow-lg: 0 35px 60px -12px rgba(0, 0, 0, 0.7);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--darker);
+            color: var(--light);
+            line-height: 1.6;
+            overflow-x: hidden !important;
+            max-width: 100vw !important;
+            position: relative !important;
+            background-image: 
+                radial-gradient(at 80% 0%, hsla(242, 100%, 70%, 0.15) 0px, transparent 50%),
+                radial-gradient(at 0% 50%, hsla(355, 100%, 93%, 0.1) 0px, transparent 50%),
+                radial-gradient(at 80% 100%, hsla(189, 100%, 56%, 0.1) 0px, transparent 50%);
+        }
+
+        html {
+            overflow-x: hidden !important;
+            max-width: 100vw !important;
+        }
+
+        /* Particles Background */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        /* Header Ultra-Moderne */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1rem;
+            background: rgba(2, 6, 23, 0.85);
+            backdrop-filter: blur(25px);
+            border-bottom: 1px solid var(--glass-border);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 800;
+            font-size: 1.5rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-decoration: none;
+        }
+
+        /* Navigation */
+        .nav {
+            display: none;
+        }
+
+        .nav.mobile-open {
+            display: block;
+            position: fixed;
+            top: 65px;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(20px);
+            z-index: 1999;
+            animation: slideDown 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            padding: 0 1rem 1rem 1rem;
+            overflow-y: hidden;
+        }
+
+        .mobile-menu-container {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.98) 0%, rgba(2, 6, 23, 0.98) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            backdrop-filter: blur(30px);
+            padding: 1.5rem;
+            animation: scaleUp 0.4s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+            position: relative;
+            z-index: 2001;
+            max-height: calc(100vh - 80px);
+            overflow-y: auto;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .mobile-menu-title {
+            font-size: 1.1rem;
+            font-weight: 800;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 0.1rem;
+            text-align: center;
+        }
+
+        .mobile-menu-subtitle {
+            color: var(--gray);
+            font-size: 0.75rem;
+            text-align: center;
+            margin-bottom: 0.6rem;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes scaleUp {
+            from {
+                transform: scale(0.95);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            cursor: pointer;
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-link:hover {
+            color: var(--light);
+            background: rgba(99, 102, 241, 0.15);
+            border-color: rgba(99, 102, 241, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .nav-link.mobile-only {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
+        }
+
+        .nav-link.mobile-only.register {
+            background: linear-gradient(135deg, var(--accent) 0%, #f59e0b 100%);
+            box-shadow: 0 8px 25px rgba(236, 72, 153, 0.3);
+        }
+
+        .nav-pages-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .nav-auth-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .nav-divider {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            margin: 0.4rem 0;
+        }
+
+        .nav-divider.desktop-separator {
+            display: none;
+        }
+
+        /* Hamburger Menu */
+        .hamburger {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            z-index: 2001;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: var(--light);
+            border-radius: 2px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+
+        /* Desktop Navigation */
+        .desktop-nav {
+            display: none !important;
+        }
+
+        @media (min-width: 768px) {
+            .desktop-nav {
+                display: flex !important;
+                justify-content: space-between;
+                align-items: center;
+                width: 100%;
+                gap: 2rem;
+            }
+            
+            .desktop-nav-links {
+                display: flex;
+                align-items: center;
+                gap: 1.5rem;
+                margin-left: 3rem;
+            }
+            
+            .desktop-nav-link {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                padding: 0.75rem 1.25rem;
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 12px;
+                color: var(--light);
+                text-decoration: none;
+                font-weight: 500;
+                font-size: 0.95rem;
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                backdrop-filter: blur(10px);
+            }
+
+            .desktop-nav-link:hover,
+            .desktop-nav-link.active {
+                background: rgba(99, 102, 241, 0.15);
+                border-color: rgba(99, 102, 241, 0.3);
+                transform: translateY(-2px);
+            }
+            
+            .desktop-nav-auth {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+            }
+            
+            .desktop-btn {
+                padding: 0.75rem 1.5rem;
+                border: none;
+                border-radius: 12px;
+                font-weight: 600;
+                font-size: 0.95rem;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+            .desktop-btn-outline {
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                color: var(--light);
+            }
+
+            .desktop-btn-outline:hover {
+                background: rgba(99, 102, 241, 0.15);
+                border-color: rgba(99, 102, 241, 0.3);
+                transform: translateY(-2px);
+            }
+
+            .desktop-btn-primary {
+                background: var(--gradient);
+                color: white;
+                box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
+            }
+
+            .desktop-btn-primary:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 12px 35px rgba(99, 102, 241, 0.4);
+            }
+
+            .hamburger {
+                display: none !important;
+            }
+        }
+
+        /* Main Content */
+        main {
+            margin-top: 80px;
+            padding: 2rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: calc(100vh - 80px);
+        }
+
+        .login-container {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(20px);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .login-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .login-subtitle {
+            color: var(--gray);
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-label {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--light);
+        }
+
+        .form-input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            color: var(--light);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            background: rgba(99, 102, 241, 0.1);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .form-submit {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
+        }
+
+        .form-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(99, 102, 241, 0.4);
+        }
+
+        .login-links {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+
+        .login-links a,
+        .login-links button {
+            color: var(--primary);
+            text-decoration: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .login-links a:hover,
+        .login-links button:hover {
+            color: var(--accent);
+        }
+
+        .login-divider {
+            text-align: center;
+            color: var(--gray);
+            position: relative;
+            margin: 1rem 0;
+        }
+
+        .login-divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        }
+
+        .login-divider span {
+            background: var(--glass);
+            padding: 0 0.5rem;
+            position: relative;
+        }
+
+        .social-login {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-btn {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 0.75rem;
+            color: var(--light);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .social-btn:hover {
+            background: rgba(99, 102, 241, 0.15);
+            border-color: var(--primary);
+        }
+
+        .signup-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .signup-link button {
+            color: var(--primary);
+            background: none;
+            border: none;
+            cursor: pointer;
+            text-decoration: underline;
+            transition: all 0.3s ease;
+        }
+
+        .signup-link button:hover {
+            color: var(--accent);
+        }
+
+        /* Discord Floating Button */
+        .discord-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 9999;
+        }
+        
+        .discord-float-btn {
+            position: relative;
+            width: auto;
+            height: 60px;
+            padding: 0 20px;
+            background: linear-gradient(135deg, #5865F2, #4752C4);
+            border: none;
+            border-radius: 30px;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 25px rgba(88, 101, 242, 0.4);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .discord-float-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(88, 101, 242, 0.6);
+            background: linear-gradient(135deg, #6773f5, #5761d4);
+        }
+        
+        .discord-float-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%) scale(0);
+            transition: all 0.5s ease;
+        }
+        
+        .discord-float-btn:active::before {
+            transform: translate(-50%, -50%) scale(4);
+            opacity: 0;
+        }
+        @media (max-width: 768px) {
+            .discord-float {
+                bottom: 18px;
+                right: 18px;
+            }
+
+            .discord-float-btn {
+                height: 48px;
+                padding: 0 16px;
+                font-size: 12px;
+                gap: 6px;
+                box-shadow: 0 6px 18px rgba(88, 101, 242, 0.45);
+            }
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(2, 6, 23, 0.85);
+            border-top: 1px solid var(--glass-border);
+            padding: 2rem 1rem;
+            text-align: center;
+            color: var(--gray);
+            margin-top: 4rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Particles Background -->
+    <div id="particles-js"></div>
+
+    <!-- Header Unifié -->
+    <header class="header">
+        <div class="header-content">
+            <a href="index.html" class="logo">
+                <i class="fas fa-bolt"></i>
+                Novaxell
+            </a>
+            
+            <!-- Desktop Navigation -->
+            <nav class="desktop-nav">
+                <div class="desktop-nav-links">
+                    <a href="index.html" class="desktop-nav-link">
+                        <i class="fas fa-home"></i>
+                        Accueil
+                    </a>
+                    <a class="desktop-nav-link" href="shop.html">
+                        <i class="fas fa-shopping-bag"></i>
+                        Boutique
+                    </a>
+                    <a class="desktop-nav-link" href="spotify-guide.html">
+                        <i class="fab fa-apple"></i>
+                        Spotify iOS
+                    </a>
+                </div>
+                <div class="desktop-nav-auth">
+                    <button class="desktop-btn desktop-btn-outline" onclick="openLoginModal()">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Se Connecter
+                    </button>
+                    <button class="desktop-btn desktop-btn-primary" onclick="openRegisterModal()">
+                        <i class="fas fa-user-plus"></i>
+                        S'inscrire
+                    </button>
+                </div>
+            </nav>
+            
+            <!-- Mobile Navigation -->
+            <nav class="mobile-nav" id="mobileNav">
+                <div class="mobile-nav-content">
+                    <div class="mobile-nav-links">
+                        <a href="index.html" class="mobile-nav-link">Accueil</a>
+                        <a href="shop.html" class="mobile-nav-link">Boutique</a>
+                        <a href="spotify-guide.html" class="mobile-nav-link">Spotify iOS</a>
+                    </div>
+                    <div class="mobile-nav-actions">
+                        <button class="mobile-nav-btn mobile-nav-btn-secondary" onclick="openLoginModal()">Se Connecter</button>
+                        <button class="mobile-nav-btn mobile-nav-btn-primary" onclick="openRegisterModal()">S'inscrire</button>
+                    </div>
+                </div>
+            </nav>
+            
+            <button class="hamburger" id="hamburger" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <div class="login-container">
+            <h1 class="login-title">Connexion</h1>
+            <p class="login-subtitle">Accédez à votre compte Novaxell</p>
+            
+            <form class="login-form" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label class="form-label">Code utilisateur</label>
+                    <input type="text" class="form-input" placeholder="NOVA-USER123" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Mot de passe</label>
+                    <input type="password" class="form-input" placeholder="••••••••" required>
+                </div>
+                
+                <div class="login-links">
+                    <label>
+                        <input type="checkbox"> Se souvenir de moi
+                    </label>
+                    <button type="button" onclick="openLoginModal()">Mot de passe oublié ?</button>
+                </div>
+                
+                <button type="submit" class="form-submit">Se Connecter</button>
+            </form>
+            
+            <div class="login-divider">
+                <span>ou</span>
+            </div>
+            
+            <div class="social-login">
+                <button class="social-btn">
+                    <i class="fab fa-discord"></i>
+                    Discord
+                </button>
+                <button class="social-btn">
+                    <i class="fab fa-google"></i>
+                    Google
+                </button>
+            </div>
+            
+            <div class="signup-link">
+                Pas de compte ? <button type="button" onclick="window.location.href='register.html'">S'inscrire</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Novaxell. Tous droits réservés.</p>
+    </footer>
+    
+    <!-- Discord Floating Button -->
+    <div class="discord-float">
+        <button class="discord-float-btn" onclick="window.open('https://discord.gg/novaxell', '_blank')">
+            <i class="fab fa-discord"></i>
+            <span>Rejoindre le Discord</span>
+        </button>
+    </div>
+
+    <!-- Auth Modal Component -->
+    <div id="authModal" class="auth-modal-overlay">
+      <div class="auth-modal-container">
+        <button class="auth-modal-close" id="authModalClose">
+          <i class="fas fa-times"></i>
+        </button>
+        <div class="auth-modal-content">
+          <div class="auth-modal-header">
+            <h1 class="auth-modal-title" id="authModalTitle">Connexion</h1>
+            <p class="auth-modal-subtitle" id="authModalSubtitle">Accédez à votre compte Novaxell</p>
+          </div>
+          <form id="authForm" class="auth-form">
+            <div class="auth-form-group">
+              <label for="authInput" class="auth-form-label" id="authInputLabel">Code utilisateur</label>
+              <input type="text" id="authInput" class="auth-form-input" placeholder="NOVA-USER123" required />
+              <span class="auth-form-error" id="authInputError"></span>
+            </div>
+            <div class="auth-form-group" id="usernameGroup" style="display: none;">
+              <label for="authUsername" class="auth-form-label">Nom d'utilisateur</label>
+              <input type="text" id="authUsername" class="auth-form-input" placeholder="Votre nom" />
+              <span class="auth-form-error" id="authUsernameError"></span>
+            </div>
+            <div class="auth-form-group" id="emailGroup" style="display: none;">
+              <label for="authEmail" class="auth-form-label">Email (optionnel)</label>
+              <input type="email" id="authEmail" class="auth-form-input" placeholder="votre@email.com" />
+              <span class="auth-form-error" id="authEmailError"></span>
+            </div>
+            <div class="auth-form-group">
+              <label for="authPassword" class="auth-form-label">Mot de passe</label>
+              <div class="auth-password-wrapper">
+                <input type="password" id="authPassword" class="auth-form-input" placeholder="••••••••" required />
+                <button type="button" class="auth-password-toggle" id="authPasswordToggle">
+                  <i class="fas fa-eye"></i>
+                </button>
+              </div>
+              <span class="auth-form-error" id="authPasswordError"></span>
+            </div>
+            <div class="auth-form-group" id="confirmPasswordGroup" style="display: none;">
+              <label for="authConfirmPassword" class="auth-form-label">Confirmer le mot de passe</label>
+              <div class="auth-password-wrapper">
+                <input type="password" id="authConfirmPassword" class="auth-form-input" placeholder="••••••••" />
+                <button type="button" class="auth-password-toggle" id="authConfirmPasswordToggle">
+                  <i class="fas fa-eye"></i>
+                </button>
+              </div>
+              <span class="auth-form-error" id="authConfirmPasswordError"></span>
+            </div>
+            <div class="auth-form-error-general" id="authGeneralError" style="display: none;"></div>
+            <button type="submit" class="auth-form-submit" id="authSubmitBtn">
+              <span class="auth-submit-text">Se connecter</span>
+              <span class="auth-submit-loader" style="display: none;">
+                <i class="fas fa-spinner fa-spin"></i>
+              </span>
+            </button>
+          </form>
+          <div class="auth-modal-toggle">
+            <p id="authToggleText">Pas de compte ? <button type="button" class="auth-toggle-btn" id="authToggleBtn">S'inscrire</button></p>
+          </div>
+          <div class="auth-modal-divider">
+            <span>ou</span>
+          </div>
+          <div class="auth-modal-social">
+            <button type="button" class="auth-social-btn" id="authDiscordBtn">
+              <i class="fab fa-discord"></i>
+              Discord
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Toggle Mobile Menu
+        function toggleMobileMenu() {
+            const mobileNav = document.getElementById('mobileNav');
+            const hamburger = document.getElementById('hamburger');
+
+            if (!mobileNav || !hamburger) return;
+
+            mobileNav.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        }
+
+        // Fermer le menu mobile quand on clique sur un lien ou un bouton
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileNav = document.getElementById('mobileNav');
+            const hamburger = document.getElementById('hamburger');
+
+            if (mobileNav) {
+                mobileNav.addEventListener('click', function(event) {
+                    const target = event.target;
+                    if (target.closest('.mobile-nav-link') || target.closest('.mobile-nav-btn')) {
+                        mobileNav.classList.remove('active');
+                        if (hamburger) {
+                            hamburger.classList.remove('active');
+                        }
+                    }
+                });
+            }
+        });
+
+        // Handle Login
+        function handleLogin(event) {
+            event.preventDefault();
+            alert('Veuillez utiliser le formulaire de connexion dans la modale');
+        }
+
+        // Initialize Particles
+        document.addEventListener('DOMContentLoaded', function() {
+            particlesJS.load('particles-js', 'public/json/particles-config.json', function() {
+                console.log('Particles loaded');
+            });
+        });
+    </script>
+</body>
+</html>

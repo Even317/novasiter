@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Conditions d'utilisation - Novaxell</title>
+  <link rel="icon" href="public/img/logo.png" type="image/png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="auth-modal.css">
+  <script src="auth-modal.js" defer></script>
+
+  <style>
+    :root {
+      --primary: #6366f1;
+      --accent: #ec4899;
+      --bg: #020617;
+      --card: rgba(15,23,42,0.96);
+      --muted: #9ca3af;
+      --text: #e5e7eb;
+    }
+    * { box-sizing: border-box; margin:0; padding:0; }
+    body {
+      min-height: 100vh;
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(900px 600px at 15% -10%, rgba(37,99,235,.35), transparent 60%),
+        radial-gradient(900px 600px at 110% 110%, rgba(236,72,153,.32), transparent 60%),
+        linear-gradient(145deg, #020617 0%, #020617 40%, #020617 100%);
+    }
+
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      padding: 1rem;
+      background: rgba(2, 6, 23, 0.85);
+      backdrop-filter: blur(25px);
+      border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+    }
+    .header-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between; /* logo + nav à gauche, hamburger à droite */
+      max-width: 1400px;
+      margin: 0 auto;
+      gap: 1.5rem;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 800;
+      font-size: 1.5rem;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    .logo i { color: inherit; }
+    .logo:hover { transform: translateY(-2px); filter: brightness(1.1); }
+
+    .desktop-nav { display: none; }
+    .desktop-nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      margin-left: 3rem;
+    }
+    .desktop-nav-link {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.25rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+    }
+    .desktop-nav-link:hover,
+    .desktop-nav-link.active {
+      background: rgba(99, 102, 241, 0.15);
+      border-color: rgba(99, 102, 241, 0.3);
+      transform: translateY(-2px);
+    }
+    .desktop-nav-auth {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .desktop-btn {
+      padding: 0.8rem 1.6rem;
+      border: none;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 1rem; /* un peu plus gros pour matcher index */
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .desktop-btn-outline {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text);
+    }
+    .desktop-btn-outline:hover {
+      background: rgba(99, 102, 241, 0.15);
+      border-color: rgba(99, 102, 241, 0.3);
+      transform: translateY(-2px);
+    }
+    .desktop-btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: white;
+      box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
+    }
+    .desktop-btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 35px rgba(99, 102, 241, 0.4);
+    }
+
+    .mobile-nav {
+      position: fixed;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100vh;
+      background: rgba(2, 6, 23, 0.98);
+      backdrop-filter: blur(25px);
+      z-index: 999;
+      transition: left 0.3s ease;
+      overflow-y: auto;
+    }
+    .mobile-nav.active { left: 0; }
+    .mobile-nav-content { padding: 2rem; }
+    .mobile-nav-links {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .mobile-nav-link {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+    .mobile-nav-link:hover,
+    .mobile-nav-link.active {
+      background: rgba(99, 102, 241, 0.15);
+      border-color: rgba(99, 102, 241, 0.3);
+      transform: translateY(-2px);
+    }
+    .mobile-nav-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .mobile-nav-btn {
+      padding: 1rem;
+      border: none;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    .mobile-nav-btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text);
+    }
+    .mobile-nav-btn-secondary:hover {
+      background: rgba(99, 102, 241, 0.15);
+      border-color: rgba(99, 102, 241, 0.3);
+    }
+    .mobile-nav-btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: white;
+      box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
+    }
+    .mobile-nav-btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 35px rgba(99, 102, 241, 0.4);
+    }
+
+    .mobile-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .header-cart-btn {
+      position: relative;
+      width: 40px;
+      height: 40px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: rgba(15, 23, 42, 0.9);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #e5e7eb;
+      cursor: pointer;
+      margin-right: 0.5rem;
+      order: 0;
+    }
+
+    .header-cart-btn i {
+      font-size: 0.95rem;
+    }
+
+    .header-cart-badge {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      min-width: 16px;
+      height: 16px;
+      border-radius: 999px;
+      background: #f97316;
+      color: white;
+      font-size: 0.7rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 4px;
+    }
+
+    .hamburger {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+    .hamburger:hover { background: rgba(255, 255, 255, 0.1); }
+    .hamburger span {
+      width: 25px;
+      height: 3px;
+      background: var(--text);
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+    .hamburger.active span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+    .hamburger.active span:nth-child(2) { opacity: 0; }
+    .hamburger.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(7px, -6px);
+    }
+
+    @media (min-width: 768px) {
+      .desktop-nav {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        flex: 1 1 auto;
+        justify-content: space-between; /* liens à gauche, boutons à droite */
+      }
+      .hamburger { display: none; }
+      .mobile-nav { display: none; }
+    }
+
+    main {
+      max-width: 1120px;
+      margin: 96px auto 32px;
+      padding: 0 16px 40px;
+    }
+
+    .page-title {
+      text-align: center;
+      margin-bottom: 8px;
+      font-size: 2.3rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #f97316, var(--accent));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .page-subtitle {
+      text-align: center;
+      color: var(--muted);
+      font-size: .95rem;
+      margin-bottom: 28px;
+    }
+
+    .terms-card {
+      background: var(--card);
+      border-radius: 18px;
+      border: 1px solid rgba(15,23,42,1);
+      box-shadow: 0 24px 60px rgba(0,0,0,.7);
+      overflow: hidden;
+    }
+
+    .terms-body {
+      padding: 18px 20px 20px;
+      display: grid;
+      gap: 14px;
+      background: radial-gradient(circle at top, rgba(76,29,149,0.25), transparent 60%),
+                  rgba(15,23,42,0.98);
+    }
+
+    .section {
+      border-radius: 12px;
+      background: rgba(15,23,42,0.98);
+      border: 1px solid rgba(31,41,55,0.95);
+      padding: 14px 14px 10px;
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+      font-size: .95rem;
+      font-weight: 700;
+    }
+    .section-index {
+      width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .8rem;
+    }
+    .section-title-label { opacity: .9; }
+
+    .section-list {
+      list-style: none;
+      display: grid;
+      gap: 6px;
+      font-size: .86rem;
+      color: var(--muted);
+    }
+    .section-list li {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+      padding: 6px 4px;
+    }
+    .section-bullet {
+      margin-top: 2px;
+      font-size: .75rem;
+      width: 18px;
+      text-align: center;
+    }
+
+    .section-list strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    footer {
+      background: rgba(2, 6, 23, 0.9);
+      border-top: 1px solid rgba(148, 163, 184, 0.25);
+      padding: 16px 12px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 640px) {
+      .page-title { font-size: 1.7rem; }
+      main { margin-top: 84px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-content">
+      <a href="index.html" class="logo">
+        <i class="fas fa-bolt"></i>
+        Novaxell
+      </a>
+      
+      <!-- Desktop Navigation -->
+      <nav class="desktop-nav">
+        <div class="desktop-nav-links">
+          <a href="index.html" class="desktop-nav-link active">
+            <i class="fas fa-home"></i>
+            Accueil
+          </a>
+          <a class="desktop-nav-link" href="shop.html">
+            <i class="fas fa-shopping-bag"></i>
+            Boutique
+          </a>
+          <a class="desktop-nav-link" href="spotify-guide.html">
+            <i class="fab fa-apple"></i>
+            Spotify iOS
+          </a>
+        </div>
+        <div class="desktop-nav-auth">
+          <button class="desktop-btn desktop-btn-outline" onclick="openLoginModal && openLoginModal()">
+            <i class="fas fa-sign-in-alt"></i>
+            Se Connecter
+          </button>
+          <button class="desktop-btn desktop-btn-primary" onclick="openRegisterModal && openRegisterModal()">
+            <i class="fas fa-user-plus"></i>
+            S'inscrire
+          </button>
+        </div>
+      </nav>
+      
+      <!-- Mobile Navigation -->
+      <nav class="mobile-nav" id="mobileNav">
+        <div class="mobile-nav-content">
+          <div class="mobile-nav-links">
+            <a href="index.html" class="mobile-nav-link active">Accueil</a>
+            <a href="shop.html" class="mobile-nav-link">Boutique</a>
+            <a href="spotify-guide.html" class="mobile-nav-link">Spotify iOS</a>
+          </div>
+          <div class="mobile-nav-actions">
+            <button class="mobile-nav-btn mobile-nav-btn-secondary" onclick="openLoginModal && openLoginModal()">Se Connecter</button>
+            <button class="mobile-nav-btn mobile-nav-btn-primary" onclick="openRegisterModal && openRegisterModal()">S'inscrire</button>
+          </div>
+        </div>
+      </nav>
+      <button class="hamburger" id="hamburger" onclick="toggleMobileMenu()"><span></span><span></span><span></span></button>
+    </div>
+  </header>
+
+  <main>
+    <h1 class="page-title">Conditions d'utilisation</h1>
+    <p class="page-subtitle">
+      En utilisant Novaxell et en achetant nos services, vous acceptez les conditions ci‑dessous.
+    </p>
+
+    <section class="terms-card">
+      <div class="terms-body">
+        <article class="section">
+          <div class="section-header">
+            <div class="section-index">1</div>
+            <span class="section-title-label">Remboursement limité</span>
+          </div>
+          <ul class="section-list">
+            <li>
+              <span class="section-bullet" style="color:#ef4444;"><i class="fas fa-xmark"></i></span>
+              <span>Toutes les ventes sont définitives. Nous ne proposons qu’un remboursement limité, uniquement applicable dans les cas prévus par notre garantie. En dehors de ces situations, seuls des remplacements sont effectués lorsque les conditions de garantie sont remplies.</span>
+            </li>
+          </ul>
+        </article>
+
+        <article class="section">
+          <div class="section-header">
+            <div class="section-index">2</div>
+            <span class="section-title-label">Garantie des services</span>
+          </div>
+          <ul class="section-list">
+            <li>
+              <span class="section-bullet" style="color:#6366f1;"><i class="fas fa-circle-check"></i></span>
+              <span>La durée de garantie de chaque service provisoire est de 7 jours.</span>
+            </li>
+            <li>
+              <span class="section-bullet" style="color:#6366f1;"><i class="fas fa-clock"></i></span>
+              <span>Pendant la période de garantie, si le compte ne fonctionne plus sans faute de votre part, nous pouvons proposer un remplacement.</span>
+            </li>
+          </ul>
+        </article>
+
+        <article class="section">
+          <div class="section-header">
+            <div class="section-index">3</div>
+            <span class="section-title-label">Vérification pour les remplacements</span>
+          </div>
+          <ul class="section-list">
+            <li>
+              <span class="section-bullet" style="color:#6366f1;"><i class="fas fa-shield-halved"></i></span>
+              <span>Nous pouvons demander des preuves (captures d'écran, vidéo, message d'erreur) montrant que le compte reçu ne fonctionne plus.</span>
+            </li>
+            <li>
+              <span class="section-bullet" style="color:#ef4444;"><i class="fas fa-xmark"></i></span>
+              <span>Si les identifiants ont été modifiés, partagés ou utilisés de manière abusive, la garantie est annulée et aucun remplacement ne sera effectué.</span>
+            </li>
+          </ul>
+        </article>
+
+        <article class="section">
+          <div class="section-header">
+            <div class="section-index">4</div>
+            <span class="section-title-label">Utilisation &amp; conduite</span>
+          </div>
+          <ul class="section-list">
+            <li>
+              <span class="section-bullet" style="color:#ef4444;"><i class="fas fa-circle-exclamation"></i></span>
+              <span>Novaxell n'est pas affilié aux plateformes proposées (Spotify, Netflix, etc.). Vous devez respecter leurs conditions d'utilisation.</span>
+            </li>
+            <li>
+              <span class="section-bullet" style="color:#ef4444;"><i class="fas fa-ban"></i></span>
+              <span>Tout usage frauduleux, abusif ou destiné à nuire peut entraîner un bannissement immédiat de Novaxell, sans remboursement ni remplacement.</span>
+            </li>
+          </ul>
+        </article>
+
+        <article class="section">
+          <div class="section-header">
+            <div class="section-index">5</div>
+            <span class="section-title-label">Limitations</span>
+          </div>
+          <ul class="section-list">
+            <li>
+              <span class="section-bullet" style="color:#9ca3af;"><i class="fas fa-circle-info"></i></span>
+              <span>Les services proposés sont à visée de divertissement uniquement. Novaxell n'est pas responsable de l'usage que vous faites des comptes fournis.</span>
+            </li>
+            <li>
+              <span class="section-bullet" style="color:#9ca3af;"><i class="fas fa-scale-balanced"></i></span>
+              <span>Nous ne sommes pas responsables des sanctions prises par des plateformes tierces (bannissement de compte, blocage d'adresse IP, etc.).</span>
+            </li>
+          </ul>
+        </article>
+
+        <article class="section">
+          <div class="section-header">
+            <div class="section-index">6</div>
+            <span class="section-title-label">Mises à jour des conditions</span>
+          </div>
+          <ul class="section-list">
+            <li>
+              <span class="section-bullet" style="color:#6366f1;"><i class="fas fa-rotate"></i></span>
+              <span>Ces conditions peuvent être modifiées à tout moment. La version affichée sur cette page est la version en vigueur.</span>
+            </li>
+            <li>
+              <span class="section-bullet" style="color:#6366f1;"><i class="fas fa-circle-arrow-right"></i></span>
+              <span>En continuant d'utiliser Novaxell après une mise à jour, vous acceptez automatiquement les nouvelles conditions.</span>
+            </li>
+          </ul>
+        </article>
+
+        <article class="section">
+          <div class="section-header">
+            <div class="section-index">7</div>
+            <span class="section-title-label">Responsabilité &amp; retrait de contenu</span>
+          </div>
+          <ul class="section-list">
+            <li>
+              <span class="section-bullet" style="color:#9ca3af;"><i class="fas fa-circle-info"></i></span>
+              <span>Si vous êtes propriétaire légitime d'un service répertorié sur Novaxell et que vous souhaitez qu'il soit retiré, vous pouvez nous contacter. Après vérification, nous pouvons le supprimer de la plateforme.</span>
+            </li>
+          </ul>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    &copy; 2025 Novaxell. Tous droits réservés.
+  </footer>
+
+  <!-- Auth Modal Component (même que index/shop) -->
+  <div id="authModal" class="auth-modal-overlay">
+    <div class="auth-modal-container">
+      <button class="auth-modal-close" id="authModalClose">
+        <i class="fas fa-times"></i>
+      </button>
+      <div class="auth-modal-content">
+        <div class="auth-modal-header">
+          <h1 class="auth-modal-title" id="authModalTitle">Connexion</h1>
+          <p class="auth-modal-subtitle" id="authModalSubtitle">Accédez à votre compte Novaxell</p>
+        </div>
+        <form id="authForm" class="auth-form">
+          <div class="auth-form-group">
+            <label for="authInput" class="auth-form-label" id="authInputLabel">Code utilisateur</label>
+            <input type="text" id="authInput" class="auth-form-input" placeholder="NOVA-USER123" required />
+            <span class="auth-form-error" id="authInputError"></span>
+          </div>
+          <div class="auth-form-group" id="usernameGroup" style="display: none;">
+            <label for="authUsername" class="auth-form-label">Nom d'utilisateur</label>
+            <input type="text" id="authUsername" class="auth-form-input" placeholder="Votre nom" />
+            <span class="auth-form-error" id="authUsernameError"></span>
+          </div>
+          <div class="auth-form-group" id="emailGroup" style="display: none;">
+            <label for="authEmail" class="auth-form-label">Email (optionnel)</label>
+            <input type="email" id="authEmail" class="auth-form-input" placeholder="votre@email.com" />
+            <span class="auth-form-error" id="authEmailError"></span>
+          </div>
+          <div class="auth-form-group">
+            <label for="authPassword" class="auth-form-label">Mot de passe</label>
+            <div class="auth-password-wrapper">
+              <input type="password" id="authPassword" class="auth-form-input" placeholder="••••••••" required />
+              <button type="button" class="auth-password-toggle" id="authPasswordToggle">
+                <i class="fas fa-eye"></i>
+              </button>
+            </div>
+            <span class="auth-form-error" id="authPasswordError"></span>
+          </div>
+          <div class="auth-form-group" id="confirmPasswordGroup" style="display: none;">
+            <label for="authConfirmPassword" class="auth-form-label">Confirmer le mot de passe</label>
+            <div class="auth-password-wrapper">
+              <input type="password" id="authConfirmPassword" class="auth-form-input" placeholder="••••••••" />
+              <button type="button" class="auth-password-toggle" id="authConfirmPasswordToggle">
+                <i class="fas fa-eye"></i>
+              </button>
+            </div>
+            <span class="auth-form-error" id="authConfirmPasswordError"></span>
+          </div>
+          <div class="auth-form-error-general" id="authGeneralError" style="display: none;"></div>
+          <button type="submit" class="auth-form-submit" id="authSubmitBtn">
+            <span class="auth-submit-text">Se connecter</span>
+            <span class="auth-submit-loader" style="display: none;">
+              <i class="fas fa-spinner fa-spin"></i>
+            </span>
+          </button>
+        </form>
+        <div class="auth-modal-toggle">
+          <p id="authToggleText">Pas de compte ? <button type="button" class="auth-toggle-btn" id="authToggleBtn">S'inscrire</button></p>
+        </div>
+        <div class="auth-modal-divider">
+          <span>ou</span>
+        </div>
+        <div class="auth-modal-social">
+          <button type="button" class="auth-social-btn" id="authDiscordBtn">
+            <i class="fab fa-discord"></i>
+            Discord
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function toggleMobileMenu() {
+      const mobileNav = document.getElementById('mobileNav');
+      const hamburger = document.getElementById('hamburger');
+      if (!mobileNav || !hamburger) return;
+      mobileNav.classList.toggle('active');
+      hamburger.classList.toggle('active');
+    }
+  </script>
+</body>
+</html>
+
+

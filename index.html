@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accueil - Novaxell Premium</title>
+    <link rel="icon" href="public/img/logo.png" type="image/png">
+    
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <!-- External Libraries -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    
+    <!-- Auth Modal System -->
+    <link rel="stylesheet" href="auth-modal.css">
+    <script src="auth-modal.js" defer></script>
+    
+    <style>
+        /* Variables Ultra-Modernes */
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #f59e0b;
+            --accent: #ec4899;
+            --success: #10b981;
+            --error: #ef4444;
+            --dark: #0f172a;
+            --darker: #020617;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --glass: rgba(15, 23, 42, 0.85);
+            --glass-light: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --gradient: linear-gradient(135deg, var(--primary), var(--accent));
+            --gradient-alt: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            --shadow-lg: 0 35px 60px -12px rgba(0, 0, 0, 0.7);
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--darker);
+            color: var(--light);
+            line-height: 1.6;
+            overflow-x: hidden !important;
+            max-width: 100vw !important;
+            position: relative !important;
+            background-image: 
+                radial-gradient(at 80% 0%, hsla(242, 100%, 70%, 0.15) 0px, transparent 50%),
+                radial-gradient(at 0% 50%, hsla(355, 100%, 93%, 0.1) 0px, transparent 50%),
+                radial-gradient(at 80% 100%, hsla(189, 100%, 56%, 0.1) 0px, transparent 50%);
+        }
+
+        html {
+            overflow-x: hidden !important;
+            max-width: 100vw !important;
+        }
+
+        /* Particles Background */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+        /* Header Ultra-Moderne */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1rem;
+            background: rgba(2, 6, 23, 0.85);
+            backdrop-filter: blur(25px);
+            border-bottom: 1px solid var(--glass-border);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 800;
+            font-size: 1.5rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.2);
+        }
+
+        /* Desktop Navigation */
+        .desktop-nav {
+            display: none;
+        }
+
+        .desktop-nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-left: 3rem;
+        }
+
+        .desktop-nav-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.25rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .desktop-nav-link:hover,
+        .desktop-nav-link.active {
+            background: rgba(99, 102, 241, 0.15);
+            border-color: rgba(99, 102, 241, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .desktop-nav-auth {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .desktop-btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .desktop-btn-outline {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--light);
+        }
+
+        .desktop-btn-outline:hover {
+            background: rgba(99, 102, 241, 0.15);
+            border-color: rgba(99, 102, 241, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .desktop-btn-primary {
+            background: var(--gradient);
+            color: white;
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
+        }
+
+        .desktop-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(99, 102, 241, 0.4);
+        }
+
+        /* Mobile Navigation */
+        .mobile-nav {
+            position: fixed;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100vh;
+            background: rgba(2, 6, 23, 0.98);
+            backdrop-filter: blur(25px);
+            z-index: 999;
+            transition: left 0.3s ease;
+            overflow-y: auto;
+        }
+
+        .mobile-nav.active {
+            left: 0;
+        }
+
+        .mobile-nav-content {
+            padding: 2rem;
+        }
+
+        .mobile-nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .mobile-nav-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-nav-link:hover,
+        .mobile-nav-link.active {
+            background: rgba(99, 102, 241, 0.15);
+            border-color: rgba(99, 102, 241, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .mobile-nav-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .mobile-nav-btn {
+            padding: 1rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .mobile-nav-btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--light);
+        }
+
+        .mobile-nav-btn-secondary:hover {
+            background: rgba(99, 102, 241, 0.15);
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+
+        .mobile-nav-btn-primary {
+            background: var(--gradient);
+            color: white;
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
+        }
+
+        .mobile-nav-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(99, 102, 241, 0.4);
+        }
+
+        .hamburger {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: var(--light);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px);
+        }
+
+        /* Responsive Design */
+        @media (min-width: 768px) {
+            .desktop-nav {
+                display: flex;
+                align-items: center;
+                gap: 2rem;
+            }
+
+            .hamburger {
+                display: none;
+            }
+
+            .mobile-nav {
+                display: none;
+            }
+        }
+        main {
+            margin-top: 80px;
+            padding: 2rem 1rem;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .hero-section {
+            text-align: center;
+            padding: 4rem 0;
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .hero-title {
+            font-size: 3.1rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            overflow: hidden;
+        }
+        .hero-word-primary {
+            display: inline-block;
+            background: linear-gradient(90deg, #22c55e, #0ea5e9, #38bdf8, #3b82f6, #8b5cf6, #ec4899, #f97316, #22c55e);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 22px rgba(37, 99, 235, 0.5);
+            background-size: 350% 100%;
+            opacity: 0;
+            transform: translateY(14px);
+            animation:
+                heroGradientMove 6s linear infinite,
+                heroWordIn 0.6s ease-out forwards;
+        }
+        .hero-word-secondary {
+            display: inline-block;
+            background: linear-gradient(90deg, #22c55e, #0ea5e9, #38bdf8, #3b82f6, #8b5cf6, #ec4899, #f97316, #22c55e);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 24px rgba(59, 130, 246, 0.7);
+            background-size: 350% 100%;
+            opacity: 0;
+            transform: translateY(14px);
+            animation:
+                heroGradientMove 6s linear infinite,
+                heroWordIn 0.6s ease-out forwards;
+            animation-delay: 0s, 0.18s;
+        }
+        .hero-word-tertiary {
+            display: inline-block;
+            background: linear-gradient(90deg, #22c55e, #0ea5e9, #38bdf8, #3b82f6, #8b5cf6, #ec4899, #f97316, #22c55e);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 26px rgba(236, 72, 153, 0.8);
+            background-size: 350% 100%;
+            opacity: 0;
+            transform: translateY(14px);
+            animation:
+                heroGradientMove 6s linear infinite,
+                heroWordIn 0.6s ease-out forwards;
+            animation-delay: 0s, 0.36s;
+        }
+
+        @keyframes heroGradientMove {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        @keyframes heroWordIn {
+            0% {
+                opacity: 0;
+                transform: translateY(14px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .hero-subtitle {
+            font-size: 1.1rem;
+            color: var(--gray);
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+        }
+        .btn-primary {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(99, 102, 241, 0.4);
+        }
+        .btn-secondary {
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .btn-secondary:hover {
+            background: rgba(99, 102, 241, 0.2);
+            transform: translateY(-2px);
+        }
+        .btn-discord {
+            background: #5865F2;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 8px 25px rgba(88, 101, 242, 0.3);
+        }
+        .btn-discord:hover {
+            background: #4752C4;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(88, 101, 242, 0.4);
+        }
+        .features-section {
+            padding: 4rem 0;
+        }
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 3rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        .feature-card {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.2);
+        }
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2rem;
+            color: var(--primary);
+        }
+        .feature-card h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--light);
+        }
+        .feature-card p {
+            color: var(--gray);
+            line-height: 1.6;
+        }
+        .cta-section {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(236, 72, 153, 0.1));
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            text-align: center;
+            margin: 4rem 0;
+        }
+        .cta-content h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .cta-content p {
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+        footer {
+            background: rgba(2, 6, 23, 0.85);
+            border-top: 1px solid var(--glass-border);
+            padding: 2rem 1rem;
+            text-align: center;
+            color: var(--gray);
+            margin-top: 4rem;
+        }
+        
+        /* Discord Floating Button */
+        .discord-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 9999;
+        }
+        
+        .discord-float-btn {
+            position: relative;
+            width: auto;
+            height: 60px;
+            padding: 0 20px;
+            background: linear-gradient(135deg, #5865F2, #4752C4);
+            border: none;
+            border-radius: 30px;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 25px rgba(88, 101, 242, 0.4);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .discord-float-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(88, 101, 242, 0.6);
+            background: linear-gradient(135deg, #6773f5, #5761d4);
+        }
+        
+        .discord-float-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%) scale(0);
+            transition: all 0.5s ease;
+        }
+        
+        .discord-float-btn:active::before {
+            transform: translate(-50%, -50%) scale(4);
+            opacity: 0;
+        }
+        @media (max-width: 768px) {
+            .discord-float {
+                bottom: 18px;
+                right: 18px;
+            }
+
+            .discord-float-btn {
+                height: 48px;
+                padding: 0 16px;
+                font-size: 12px;
+                gap: 6px;
+                box-shadow: 0 6px 18px rgba(88, 101, 242, 0.45);
+            }
+        }
+        @media (min-width: 768px) {
+            .desktop-nav {
+                display: flex !important;
+                justify-content: space-between;
+                align-items: center;
+                width: 100%;
+                gap: 2rem;
+            }
+            .desktop-nav-links {
+                display: flex;
+                align-items: center;
+                gap: 1.5rem;
+                margin-left: 3rem;
+            }
+            .desktop-nav-link {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                padding: 0.75rem 1.25rem;
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 12px;
+                color: var(--light);
+                text-decoration: none;
+                font-weight: 500;
+                font-size: 0.95rem;
+                transition: all 0.3s ease;
+            }
+            .desktop-nav-link:hover,
+            .desktop-nav-link.active {
+                background: rgba(99, 102, 241, 0.15);
+                border-color: rgba(99, 102, 241, 0.3);
+                transform: translateY(-2px);
+            }
+            .desktop-nav-auth {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+            }
+            .desktop-btn {
+                padding: 0.75rem 1.5rem;
+                border: none;
+                border-radius: 12px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+            .desktop-btn-outline {
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                color: var(--light);
+            }
+            .desktop-btn-outline:hover {
+                background: rgba(99, 102, 241, 0.15);
+                border-color: rgba(99, 102, 241, 0.3);
+                transform: translateY(-2px);
+            }
+            .desktop-btn-primary {
+                background: var(--gradient);
+                color: white;
+                box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
+            }
+            .desktop-btn-primary:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 12px 35px rgba(99, 102, 241, 0.4);
+            }
+            .hamburger {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="particles-js"></div>
+    <!-- Header Unifié -->
+    <header class="header">
+        <div class="header-content">
+            <a href="index.html" class="logo">
+                <i class="fas fa-bolt"></i>
+                Novaxell
+            </a>
+            
+            <!-- Desktop Navigation -->
+            <nav class="desktop-nav">
+                <div class="desktop-nav-links">
+                    <a href="index.html" class="desktop-nav-link active">
+                        <i class="fas fa-home"></i>
+                        Accueil
+                    </a>
+                    <a class="desktop-nav-link" href="shop.html">
+                        <i class="fas fa-shopping-bag"></i>
+                        Boutique
+                    </a>
+                    <a class="desktop-nav-link" href="spotify-guide.html">
+                        <i class="fab fa-apple"></i>
+                        Spotify iOS
+                    </a>
+                </div>
+                <div class="desktop-nav-auth">
+                    <button class="desktop-btn desktop-btn-outline" onclick="openLoginModal()">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Se Connecter
+                    </button>
+                    <button class="desktop-btn desktop-btn-primary" onclick="openRegisterModal()">
+                        <i class="fas fa-user-plus"></i>
+                        S'inscrire
+                    </button>
+                </div>
+            </nav>
+            
+            <!-- Mobile Navigation -->
+            <nav class="mobile-nav" id="mobileNav">
+                <div class="mobile-nav-content">
+                    <div class="mobile-nav-links">
+                        <a href="index.html" class="mobile-nav-link active">Accueil</a>
+                        <a href="shop.html" class="mobile-nav-link">Boutique</a>
+                        <a href="spotify-guide.html" class="mobile-nav-link">Spotify iOS</a>
+                    </div>
+                    <div class="mobile-nav-actions">
+                        <button class="mobile-nav-btn mobile-nav-btn-secondary" onclick="openLoginModal()">Se Connecter</button>
+                        <button class="mobile-nav-btn mobile-nav-btn-primary" onclick="openRegisterModal()">S'inscrire</button>
+                    </div>
+                </div>
+            </nav>
+            <button class="hamburger" id="hamburger" onclick="toggleMobileMenu()"><span></span><span></span><span></span></button>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <section class="hero-section">
+                <div class="hero-content">
+                    <h1 class="hero-title">
+                        <span class="hero-word-primary">Accédez aux</span><br>
+                        <span class="hero-word-secondary">meilleurs services</span><br>
+                        <span class="hero-word-tertiary">français</span>
+                    </h1>
+                    <div class="hero-buttons">
+                        <button class="btn-primary" onclick="window.location.href='shop.html'"><i class="fas fa-rocket"></i> Commencer Maintenant</button>
+                    </div>
+                </div>
+            </section>
+            <section class="features-section">
+                <h2 class="section-title">Pourquoi Choisir Novaxell ?</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-bolt"></i></div>
+                        <h3>Génération Rapide</h3>
+                        <p>Générez des comptes en quelques secondes seulement</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+                        <h3>Sécurité Maximale</h3>
+                        <p>Tous les comptes sont vérifiés et sécurisés</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-crown"></i></div>
+                        <h3>Services Premium</h3>
+                        <p>Accès à plus de 50 services premium mondiaux</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-headset"></i></div>
+                        <h3>Support 24/7</h3>
+                        <p>Notre équipe est disponible pour vous aider</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-check-circle"></i></div>
+                        <h3>Garantie Qualité</h3>
+                        <p>Satisfaction garantie ou remboursement</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-zap"></i></div>
+                        <h3>Mise à Jour Constante</h3>
+                        <p>Nouveaux services ajoutés régulièrement</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+    <footer>
+        <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:1rem;">
+            <p>&copy; 2025 Novaxell. Tous droits réservés.</p>
+            <a href="terms.html" style="color:#9ca3af;text-decoration:none;font-size:0.9rem;">Terms of Service</a>
+        </div>
+    </footer>
+    
+    <!-- Discord Floating Button -->
+    <div class="discord-float">
+        <button class="discord-float-btn" onclick="window.open('https://discord.gg/novaxell', '_blank')">
+            <i class="fab fa-discord"></i>
+            <span>Rejoindre le Discord</span>
+        </button>
+    </div>
+    
+    <div id="authModal" class="auth-modal-overlay">
+      <div class="auth-modal-container">
+        <button class="auth-modal-close" id="authModalClose">
+          <i class="fas fa-times"></i>
+        </button>
+        <div class="auth-modal-content">
+          <div class="auth-modal-header">
+            <h1 class="auth-modal-title" id="authModalTitle">Connexion</h1>
+            <p class="auth-modal-subtitle" id="authModalSubtitle">Accédez à votre compte Novaxell</p>
+          </div>
+          <form id="authForm" class="auth-form">
+            <div class="auth-form-group">
+              <label for="authInput" class="auth-form-label" id="authInputLabel">Code utilisateur</label>
+              <input type="text" id="authInput" class="auth-form-input" placeholder="NOVA-USER123" required />
+              <span class="auth-form-error" id="authInputError"></span>
+            </div>
+            <div class="auth-form-group" id="usernameGroup" style="display: none;">
+              <label for="authUsername" class="auth-form-label">Nom d'utilisateur</label>
+              <input type="text" id="authUsername" class="auth-form-input" placeholder="Votre nom" />
+              <span class="auth-form-error" id="authUsernameError"></span>
+            </div>
+            <div class="auth-form-group" id="emailGroup" style="display: none;">
+              <label for="authEmail" class="auth-form-label">Email (optionnel)</label>
+              <input type="email" id="authEmail" class="auth-form-input" placeholder="votre@email.com" />
+              <span class="auth-form-error" id="authEmailError"></span>
+            </div>
+            <div class="auth-form-group">
+              <label for="authPassword" class="auth-form-label">Mot de passe</label>
+              <div class="auth-password-wrapper">
+                <input type="password" id="authPassword" class="auth-form-input" placeholder="••••••••" required />
+                <button type="button" class="auth-password-toggle" id="authPasswordToggle">
+                  <i class="fas fa-eye"></i>
+                </button>
+              </div>
+              <span class="auth-form-error" id="authPasswordError"></span>
+            </div>
+            <div class="auth-form-group" id="confirmPasswordGroup" style="display: none;">
+              <label for="authConfirmPassword" class="auth-form-label">Confirmer le mot de passe</label>
+              <div class="auth-password-wrapper">
+                <input type="password" id="authConfirmPassword" class="auth-form-input" placeholder="••••••••" />
+                <button type="button" class="auth-password-toggle" id="authConfirmPasswordToggle">
+                  <i class="fas fa-eye"></i>
+                </button>
+              </div>
+              <span class="auth-form-error" id="authConfirmPasswordError"></span>
+            </div>
+            <div class="auth-form-error-general" id="authGeneralError" style="display: none;"></div>
+            <button type="submit" class="auth-form-submit" id="authSubmitBtn">
+              <span class="auth-submit-text">Se connecter</span>
+              <span class="auth-submit-loader" style="display: none;">
+                <i class="fas fa-spinner fa-spin"></i>
+              </span>
+            </button>
+          </form>
+          <div class="auth-modal-toggle">
+            <p id="authToggleText">Pas de compte ? <button type="button" class="auth-toggle-btn" id="authToggleBtn">S'inscrire</button></p>
+          </div>
+          <div class="auth-modal-divider">
+            <span>ou</span>
+          </div>
+          <div class="auth-modal-social">
+            <button type="button" class="auth-social-btn" id="authDiscordBtn">
+              <i class="fab fa-discord"></i>
+              Discord
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+        function toggleMobileMenu() {
+            const mobileNav = document.getElementById('mobileNav');
+            const hamburger = document.getElementById('hamburger');
+
+            if (!mobileNav || !hamburger) return;
+
+            mobileNav.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        }
+
+        // Fermer le menu mobile quand on clique sur un lien
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileNav = document.getElementById('mobileNav');
+            const hamburger = document.getElementById('hamburger');
+
+            if (mobileNav) {
+                mobileNav.addEventListener('click', function(event) {
+                    const target = event.target;
+                    if (target.closest('.mobile-nav-link')) {
+                        mobileNav.classList.remove('active');
+                        if (hamburger) {
+                            hamburger.classList.remove('active');
+                        }
+                    }
+                });
+            }
+
+            particlesJS.load('particles-js', 'public/json/particles-config.json', function() {
+                console.log('Particles loaded');
+            });
+        });
+    </script>
+</body>
+</html>

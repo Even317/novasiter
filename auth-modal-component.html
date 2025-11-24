@@ -1,0 +1,122 @@
+<!-- Auth Modal Component - Novaxell Premium -->
+<div id="authModal" class="auth-modal-overlay">
+  <div class="auth-modal-container">
+    <!-- Close Button -->
+    <button class="auth-modal-close" id="authModalClose">
+      <i class="fas fa-times"></i>
+    </button>
+
+    <!-- Modal Content -->
+    <div class="auth-modal-content">
+      <!-- Header -->
+      <div class="auth-modal-header">
+        <h1 class="auth-modal-title" id="authModalTitle">Connexion</h1>
+        <p class="auth-modal-subtitle" id="authModalSubtitle">Accédez à votre compte Novaxell</p>
+      </div>
+
+      <!-- Form -->
+      <form id="authForm" class="auth-form">
+        <!-- Code/Username Field -->
+        <div class="auth-form-group">
+          <label for="authInput" class="auth-form-label" id="authInputLabel">Code utilisateur</label>
+          <input
+            type="text"
+            id="authInput"
+            class="auth-form-input"
+            placeholder="NOVA-USER123"
+            required
+          />
+          <span class="auth-form-error" id="authInputError"></span>
+        </div>
+
+        <!-- Username Field (Register Only) -->
+        <div class="auth-form-group" id="usernameGroup" style="display: none;">
+          <label for="authUsername" class="auth-form-label">Nom d'utilisateur</label>
+          <input
+            type="text"
+            id="authUsername"
+            class="auth-form-input"
+            placeholder="Votre nom"
+          />
+          <span class="auth-form-error" id="authUsernameError"></span>
+        </div>
+
+        <!-- Email Field (Register Only) -->
+        <div class="auth-form-group" id="emailGroup" style="display: none;">
+          <label for="authEmail" class="auth-form-label">Email (optionnel)</label>
+          <input
+            type="email"
+            id="authEmail"
+            class="auth-form-input"
+            placeholder="votre@email.com"
+          />
+          <span class="auth-form-error" id="authEmailError"></span>
+        </div>
+
+        <!-- Password Field -->
+        <div class="auth-form-group">
+          <label for="authPassword" class="auth-form-label">Mot de passe</label>
+          <div class="auth-password-wrapper">
+            <input
+              type="password"
+              id="authPassword"
+              class="auth-form-input"
+              placeholder="••••••••"
+              required
+            />
+            <button type="button" class="auth-password-toggle" id="authPasswordToggle">
+              <i class="fas fa-eye"></i>
+            </button>
+          </div>
+          <span class="auth-form-error" id="authPasswordError"></span>
+        </div>
+
+        <!-- Confirm Password Field (Register Only) -->
+        <div class="auth-form-group" id="confirmPasswordGroup" style="display: none;">
+          <label for="authConfirmPassword" class="auth-form-label">Confirmer le mot de passe</label>
+          <div class="auth-password-wrapper">
+            <input
+              type="password"
+              id="authConfirmPassword"
+              class="auth-form-input"
+              placeholder="••••••••"
+            />
+            <button type="button" class="auth-password-toggle" id="authConfirmPasswordToggle">
+              <i class="fas fa-eye"></i>
+            </button>
+          </div>
+          <span class="auth-form-error" id="authConfirmPasswordError"></span>
+        </div>
+
+        <!-- General Error Message -->
+        <div class="auth-form-error-general" id="authGeneralError" style="display: none;"></div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="auth-form-submit" id="authSubmitBtn">
+          <span class="auth-submit-text">Se connecter</span>
+          <span class="auth-submit-loader" style="display: none;">
+            <i class="fas fa-spinner fa-spin"></i>
+          </span>
+        </button>
+      </form>
+
+      <!-- Toggle Mode -->
+      <div class="auth-modal-toggle">
+        <p id="authToggleText">Pas de compte ? <button type="button" class="auth-toggle-btn" id="authToggleBtn">S'inscrire</button></p>
+      </div>
+
+      <!-- Divider -->
+      <div class="auth-modal-divider">
+        <span>ou</span>
+      </div>
+
+      <!-- Social Login -->
+      <div class="auth-modal-social">
+        <button type="button" class="auth-social-btn" id="authDiscordBtn">
+          <i class="fab fa-discord"></i>
+          Discord
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
