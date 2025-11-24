@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -1052,3 +1053,1059 @@
     </script>
 </body>
 </html>
+=======
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify iOS Premium - Novaxell</title>
+    <link rel="icon" href="public/img/logo.png" type="image/png">
+    
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <!-- External Libraries -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    
+    <!-- Auth Modal System -->
+    <link rel="stylesheet" href="auth-modal.css">
+    <script src="auth-modal.js" defer></script>
+    
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #f59e0b;
+            --accent: #ec4899;
+            --success: #10b981;
+            --error: #ef4444;
+            --dark: #0f172a;
+            --darker: #020617;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --glass: rgba(15, 23, 42, 0.85);
+            --glass-light: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --gradient: linear-gradient(135deg, var(--primary), var(--accent));
+            --gradient-alt: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            --shadow-lg: 0 35px 60px -12px rgba(0, 0, 0, 0.7);
+            --spotify-green: #1db954;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--darker);
+            color: var(--light);
+            line-height: 1.6;
+            overflow-x: hidden !important;
+            max-width: 100vw !important;
+            position: relative !important;
+            background-image: 
+                radial-gradient(at 80% 0%, hsla(242, 100%, 70%, 0.15) 0px, transparent 50%),
+                radial-gradient(at 0% 50%, hsla(355, 100%, 93%, 0.1) 0px, transparent 50%),
+                radial-gradient(at 80% 100%, hsla(189, 100%, 56%, 0.1) 0px, transparent 50%);
+        }
+
+        html {
+            overflow-x: hidden !important;
+            max-width: 100vw !important;
+        }
+
+        /* Particles Background */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        /* Header Ultra-Moderne (copié du site) */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1rem;
+            background: rgba(2, 6, 23, 0.85);
+            backdrop-filter: blur(25px);
+            border-bottom: 1px solid var(--glass-border);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 800;
+            font-size: 1.5rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-decoration: none;
+        }
+
+        /* Desktop Navigation */
+        .desktop-nav {
+            display: none !important;
+        }
+
+        @media (min-width: 768px) {
+            .desktop-nav {
+                display: flex !important;
+                justify-content: space-between;
+                align-items: center;
+                width: 100%;
+                gap: 2rem;
+            }
+
+            .desktop-nav-links {
+                display: flex;
+                align-items: center;
+                gap: 1.5rem;
+                margin-left: 3rem;
+            }
+
+            .desktop-nav-link {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                padding: 0.75rem 1.25rem;
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 12px;
+                color: var(--light);
+                text-decoration: none;
+                font-weight: 500;
+                font-size: 0.95rem;
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                backdrop-filter: blur(10px);
+            }
+
+            .desktop-nav-link:hover,
+            .desktop-nav-link.active {
+                background: rgba(99, 102, 241, 0.15);
+                border-color: rgba(99, 102, 241, 0.3);
+                transform: translateY(-2px);
+            }
+
+            .desktop-nav-auth {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+            }
+
+            .desktop-btn {
+                padding: 0.75rem 1.5rem;
+                border: none;
+                border-radius: 12px;
+                font-weight: 600;
+                font-size: 0.95rem;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+            .desktop-btn-outline {
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                color: var(--light);
+            }
+
+            .desktop-btn-outline:hover {
+                background: rgba(99, 102, 241, 0.15);
+                border-color: rgba(99, 102, 241, 0.3);
+                transform: translateY(-2px);
+            }
+
+            .desktop-btn-primary {
+                background: var(--gradient);
+                color: white;
+                box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
+            }
+
+            .desktop-btn-primary:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 12px 35px rgba(99, 102, 241, 0.4);
+            }
+
+            /* En desktop, on cache le burger (menu mobile) */
+            .hamburger {
+                display: none;
+            }
+        }
+
+        /* Mobile Navigation (copié du site) */
+        .mobile-nav {
+            position: fixed;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100vh;
+            background: rgba(2, 6, 23, 0.98);
+            backdrop-filter: blur(25px);
+            z-index: 999;
+            transition: left 0.3s ease;
+            overflow-y: auto;
+        }
+
+        .mobile-nav.active {
+            left: 0;
+        }
+
+        .mobile-nav-content {
+            padding: 2rem;
+        }
+
+        .mobile-nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .mobile-nav-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-nav-link:hover,
+        .mobile-nav-link.active {
+            background: rgba(99, 102, 241, 0.15);
+            border-color: rgba(99, 102, 241, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .mobile-nav-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .mobile-nav-btn {
+            padding: 1rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .mobile-nav-btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--light);
+        }
+
+        .mobile-nav-btn-secondary:hover {
+            background: rgba(99, 102, 241, 0.15);
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+
+        .mobile-nav-btn-primary {
+            background: var(--gradient);
+            color: white;
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
+        }
+
+        .mobile-nav-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(99, 102, 241, 0.4);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            z-index: 2001;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: var(--light);
+            border-radius: 2px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+
+        /* Main Layout */
+        main {
+            margin-top: 78px;
+            padding: 1.5rem 1rem 3.2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Hero Intro */
+        .hero-section {
+            text-align: center;
+            padding: 2.8rem 0 1.8rem;
+            min-height: 42vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-title {
+            display: inline-block;
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #22c55e, #0ea5e9, #3b82f6, #8b5cf6, #ec4899);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 1rem;
+            word-spacing: normal;
+            white-space: nowrap;
+            overflow: hidden;
+            max-width: max-content;
+            border-right: 2px solid rgba(148, 163, 184, 0.8);
+            animation: typing 2.8s steps(24, end), blink-caret .9s step-end infinite;
+        }
+
+        .hero-title br {
+            display: none; /* desktop: une seule ligne */
+        }
+
+        .hero-cta-btn {
+            margin-top: 1.5rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.85rem 1.9rem;
+            border-radius: 999px;
+            border: none;
+            background: linear-gradient(135deg, #6366f1, #ec4899);
+            color: #f9fafb;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            box-shadow: 0 10px 28px rgba(99, 102, 241, 0.55);
+        }
+
+        .hero-cta-btn i {
+            font-size: 0.9rem;
+        }
+
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: rgba(148, 163, 184, 0.9); }
+        }
+
+        .hero-subtitle {
+            font-size: 1.05rem;
+            color: var(--gray);
+            max-width: 760px;
+            margin: 0 auto;
+        }
+
+        /* DNS Section */
+        .dns-card {
+            background: radial-gradient(circle at top left, rgba(148, 163, 184, 0.12), transparent 55%),
+                        radial-gradient(circle at bottom right, rgba(59, 130, 246, 0.18), transparent 55%),
+                        var(--glass);
+            border-radius: 28px;
+            border: 1px solid rgba(148, 163, 184, 0.35);
+            padding: 2.7rem 2.2rem;
+            margin: 2.5rem 0;
+            box-shadow: 0 28px 60px rgba(15, 23, 42, 0.9);
+            text-align: center;
+        }
+
+        .dns-title {
+            font-size: 1.9rem;
+            font-weight: 700;
+            margin-bottom: 1.2rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .dns-title i {
+            color: #60a5fa;
+        }
+
+        .dns-description {
+            font-size: 1rem;
+            color: var(--gray);
+            margin: 0 auto 1.8rem;
+            max-width: 720px;
+        }
+
+        .dns-primary-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.55rem;
+            position: relative;
+            background: linear-gradient(135deg, #1d4ed8 0%, #4f46e5 40%, #ec4899 100%);
+            color: #f9fafb;
+            border-radius: 999px;
+            padding: 0.95rem 2.6rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            border: 1px solid rgba(191, 219, 254, 0.7);
+            box-shadow:
+                0 12px 32px rgba(15, 23, 42, 0.9),
+                0 0 0 1px rgba(59, 130, 246, 0.55);
+            overflow: hidden;
+            transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+        }
+
+        .dns-primary-btn::before {
+            content: '';
+            position: absolute;
+            inset: 2px;
+            border-radius: inherit;
+            background: radial-gradient(circle at 20% 0%, rgba(191, 219, 254, 0.3), transparent 55%),
+                        radial-gradient(circle at 80% 100%, rgba(248, 187, 247, 0.35), transparent 55%);
+            opacity: 0.85;
+            pointer-events: none;
+            mix-blend-mode: screen;
+        }
+
+        .dns-primary-btn:hover {
+            transform: translateY(-1px) scale(1.02);
+            border-color: rgba(219, 234, 254, 0.95);
+            box-shadow:
+                0 18px 46px rgba(15, 23, 42, 1),
+                0 0 0 1px rgba(96, 165, 250, 0.8);
+            background: linear-gradient(135deg, #2563eb 0%, #4f46e5 35%, #ec4899 100%);
+        }
+
+        .dns-steps-box {
+            margin-top: 2rem;
+            background: rgba(15, 23, 42, 0.95);
+            border-radius: 16px;
+            border: 1px solid rgba(148, 163, 184, 0.45);
+            padding: 1.8rem 1.6rem;
+            color: var(--gray);
+            line-height: 1.8;
+        }
+
+        .dns-steps-box h3 {
+            margin-bottom: 0.8rem;
+            font-size: 1.05rem;
+            color: var(--light);
+        }
+
+        .dns-steps-box ol {
+            margin-left: 1.2rem;
+        }
+
+        /* Spotify Card */
+        .spotify-card {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.96) 0%, rgba(29, 185, 84, 0.12) 100%);
+            border-radius: 24px;
+            border: 1px solid var(--glass-border);
+            padding: 3rem 2rem;
+            box-shadow: var(--shadow-lg);
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .spotify-icon {
+            width: 200px;
+            height: 130px;
+            border-radius: 26px;
+            display: block;
+            margin: 0 auto 2rem;
+            box-shadow: 0 18px 46px rgba(29, 185, 84, 0.45);
+        }
+
+        .spotify-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--spotify-green), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .spotify-description {
+            font-size: 1rem;
+            color: var(--gray);
+            max-width: 640px;
+            margin: 0 auto 2rem;
+        }
+
+        .spotify-download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.9rem 2rem;
+            border-radius: 999px;
+            border: none;
+            background: linear-gradient(135deg, var(--spotify-green) 0%, #1ed760 100%);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 12px 32px rgba(29, 185, 84, 0.45);
+            text-decoration: none;
+        }
+
+        .spotify-download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 16px 40px rgba(29, 185, 84, 0.6);
+        }
+
+        /* TikTok / Spotify Modal */
+        .tiktok-modal-card {
+            background:
+                radial-gradient(circle at top left, rgba(59, 130, 246, 0.35), transparent 55%),
+                radial-gradient(circle at bottom right, rgba(236, 72, 153, 0.35), transparent 55%),
+                #020617;
+            border-radius: 30px;
+            padding: 2.6rem 2.4rem 2.4rem;
+            border: 1px solid rgba(148, 163, 184, 0.65);
+            box-shadow: 0 34px 90px rgba(15, 23, 42, 0.98);
+            text-align: left;
+            position: relative;
+        }
+
+        .tiktok-modal-logo {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1.2rem;
+        }
+
+        .tiktok-modal-logo img {
+            width: 112px;
+            height: 112px;
+            border-radius: 30px;
+            box-shadow: 0 20px 48px rgba(16, 185, 129, 0.55);
+        }
+
+        .tiktok-modal-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 0.9rem;
+            text-align: center;
+        }
+
+        .tiktok-modal-text {
+            font-size: 1rem;
+            color: var(--gray);
+            margin-bottom: 1.7rem;
+            line-height: 1.75;
+        }
+
+        .tiktok-link {
+            color: #60a5fa;
+            font-weight: 600;
+            text-decoration: underline;
+        }
+
+        .tiktok-install-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.55rem;
+            padding: 0.95rem 2.6rem;
+            border-radius: 999px;
+            border: none;
+            background: linear-gradient(135deg, #16a34a 0%, #1d2b64 22%, #4c1d95 60%, #ec4899 100%);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow:
+                0 16px 38px rgba(15, 23, 42, 0.98),
+                0 0 0 1px rgba(15, 23, 42, 0.9);
+            width: 100%;
+            transition: transform 0.16s ease, box-shadow 0.16s ease;
+        }
+
+        .tiktok-install-btn:hover {
+            transform: translateY(-1px) scale(1.02);
+            box-shadow:
+                0 20px 48px rgba(15, 23, 42, 1),
+                0 0 0 1px rgba(52, 211, 153, 0.7);
+        }
+
+        .tiktok-install-btn i {
+            font-size: 0.9rem;
+        }
+
+        .swal2-popup {
+            width: min(560px, 94vw) !important;
+            padding: 0 !important;
+            background: transparent !important;
+        }
+
+        /* Close button custom dans la carte */
+        .tiktok-modal-close {
+            position: absolute;
+            top: 16px;
+            right: 18px;
+            width: 30px;
+            height: 30px;
+            border-radius: 999px;
+            border: 1px solid rgba(148, 163, 184, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(15, 23, 42, 0.85);
+            color: rgba(248, 250, 252, 0.8);
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        .tiktok-modal-close:hover {
+            background: rgba(30, 64, 175, 0.85);
+            border-color: rgba(191, 219, 254, 0.9);
+            color: white;
+        }
+
+        .swal2-close {
+            display: none !important;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(2, 6, 23, 0.85);
+            border-top: 1px solid var(--glass-border);
+            padding: 2rem 1rem;
+            text-align: center;
+            color: var(--gray);
+            margin-top: 4rem;
+        }
+
+        /* Discord Floating Button (copié) */
+        .discord-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 9999;
+        }
+        
+        .discord-float-btn {
+            position: relative;
+            width: auto;
+            height: 60px;
+            padding: 0 20px;
+            background: linear-gradient(135deg, #5865F2, #4752C4);
+            border: none;
+            border-radius: 30px;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 25px rgba(88, 101, 242, 0.4);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .discord-float-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(88, 101, 242, 0.6);
+            background: linear-gradient(135deg, #6773f5, #5761d4);
+        }
+        
+        .discord-float-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%) scale(0);
+            transition: all 0.5s ease;
+        }
+        
+        .discord-float-btn:active::before {
+            transform: translate(-50%, -50%) scale(4);
+            opacity: 0;
+        }
+
+        @media (max-width: 768px) {
+            .hero-section {
+                padding: 2rem 0 1.2rem;
+                min-height: 0;
+            }
+
+            .hero-title {
+                font-size: 2.2rem;
+                white-space: normal;
+                max-width: 90vw;
+            }
+
+            .hero-title br {
+                display: block; /* mobile: forcer Guide Spotify puis Premium */
+            }
+
+            .discord-float {
+                bottom: 18px;
+                right: 18px;
+            }
+
+            .discord-float-btn {
+                height: 48px;
+                padding: 0 16px;
+                font-size: 12px;
+                gap: 6px;
+                box-shadow: 0 6px 18px rgba(88, 101, 242, 0.45);
+            }
+
+            .spotify-card {
+                padding: 2.2rem 1.4rem;
+            }
+
+            /* En mobile on affiche le hamburger */
+            .hamburger {
+                display: flex;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Particles Background -->
+    <div id="particles-js"></div>
+
+    <!-- Header Unifié -->
+    <header class="header">
+        <div class="header-content">
+            <a href="index.html" class="logo">
+                <i class="fas fa-bolt"></i>
+                Novaxell
+            </a>
+            
+            <!-- Desktop Navigation -->
+            <nav class="desktop-nav">
+                <div class="desktop-nav-links">
+                    <a href="index.html" class="desktop-nav-link">
+                        <i class="fas fa-home"></i>
+                        Accueil
+                    </a>
+                    <a class="desktop-nav-link" href="shop.html">
+                        <i class="fas fa-shopping-bag"></i>
+                        Boutique
+                    </a>
+                    <a class="desktop-nav-link active" href="spotify-guide.html">
+                        <i class="fab fa-apple"></i>
+                        Spotify iOS
+                    </a>
+                </div>
+                <div class="desktop-nav-auth">
+                    <button class="desktop-btn desktop-btn-outline" onclick="openLoginModal()">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Se Connecter
+                    </button>
+                    <button class="desktop-btn desktop-btn-primary" onclick="openRegisterModal()">
+                        <i class="fas fa-user-plus"></i>
+                        S'inscrire
+                    </button>
+                </div>
+            </nav>
+            
+            <!-- Mobile Navigation -->
+            <nav class="mobile-nav" id="mobileNav">
+                <div class="mobile-nav-content">
+                    <div class="mobile-nav-links">
+                        <a href="index.html" class="mobile-nav-link">Accueil</a>
+                        <a href="shop.html" class="mobile-nav-link">Boutique</a>
+                        <a href="spotify-guide.html" class="mobile-nav-link active">Spotify iOS</a>
+                    </div>
+                    <div class="mobile-nav-actions">
+                        <button class="mobile-nav-btn mobile-nav-btn-secondary" onclick="openLoginModal()">Se Connecter</button>
+                        <button class="mobile-nav-btn mobile-nav-btn-primary" onclick="openRegisterModal()">S'inscrire</button>
+                    </div>
+                </div>
+            </nav>
+            
+            <button class="hamburger" id="hamburger" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <div class="container">
+            <section class="hero-section">
+                <div class="hero-badge">
+                </div>
+                <h1 class="hero-title">Guide Spotify<br> Premium</h1>
+                <p class="hero-subtitle"></p>
+                <button class="hero-cta-btn" type="button" onclick="scrollToDnsSection()">
+                    <i class="fas fa-rocket"></i>
+                    <span>Suivre le tuto</span>
+                </button>
+            </section>
+
+            <section id="dns-section">
+                <div class="dns-card">
+                    <h2 class="dns-title">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Installation du DNS (Étape Importante)</span>
+                    </h2>
+                    <p class="dns-description">
+                        Avant d’installer Spotify, il est important de configurer un DNS dédié pour éviter les blocages d’Apple, qui applique des restrictions strictes..
+                    </p>
+
+                    <a class="dns-primary-btn" href="https://github.com/Even317/vraispotify-sign/releases/download/dns/novaxelldns.mobileconfig" target="_blank" rel="noopener noreferrer">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Installer le DNS</span>
+                    </a>
+
+                    <div class="dns-steps-box">
+                        <h3>Comment installer le DNS en quelques étapes simples :</h3>
+                        <ol>
+                            <li>Ouvre <strong>Réglages</strong> sur ton iPhone.</li>
+                            <li>Va dans <strong>Général</strong> puis <strong>VPN et gestion de l'appareil</strong>.</li>
+                            <li>Sélectionne le profil DNS se nommant "kdoidvn".</li>
+                            <li>Appuie sur <strong>Installer</strong> en haut à droite.</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="spotify-card">
+                    <img src="public/img/spotify.png" alt="Spotify" class="spotify-icon">
+                    <h2 class="spotify-title">Spotify Premium sur iOS</h2>
+                    <p class="spotify-description">
+                        Écoute ta musique avec toutes les fonctionnalités premium depuis ton Ipone/Ipad.
+                    </p>
+                    <a class="spotify-download-btn" href="#" id="spotifyDownloadBtn">
+                        <i class="fas fa-download"></i>
+                        Télécharger Spotify
+                    </a>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:1rem;">
+            <p>&copy; 2025 Novaxell. Tous droits réservés.</p>
+            <a href="terms.html" style="color:#9ca3af;text-decoration:none;font-size:0.9rem;">Terms of Service</a>
+        </div>
+    </footer>
+    
+    <!-- Discord Floating Button -->
+    <div class="discord-float">
+        <button class="discord-float-btn" onclick="window.open('https://discord.gg/novaxell', '_blank')">
+            <i class="fab fa-discord"></i>
+            <span>Rejoindre le Discord</span>
+        </button>
+    </div>
+
+    <!-- Auth Modal Component (copié) -->
+    <div id="authModal" class="auth-modal-overlay">
+      <div class="auth-modal-container">
+        <button class="auth-modal-close" id="authModalClose">
+          <i class="fas fa-times"></i>
+        </button>
+        <div class="auth-modal-content">
+          <div class="auth-modal-header">
+            <h1 class="auth-modal-title" id="authModalTitle">Connexion</h1>
+            <p class="auth-modal-subtitle" id="authModalSubtitle">Accédez à votre compte Novaxell</p>
+          </div>
+          <form id="authForm" class="auth-form">
+            <div class="auth-form-group">
+              <label for="authInput" class="auth-form-label" id="authInputLabel">Code utilisateur</label>
+              <input type="text" id="authInput" class="auth-form-input" placeholder="NOVA-USER123" required />
+              <span class="auth-form-error" id="authInputError"></span>
+            </div>
+            <div class="auth-form-group" id="usernameGroup" style="display: none;">
+              <label for="authUsername" class="auth-form-label">Nom d'utilisateur</label>
+              <input type="text" id="authUsername" class="auth-form-input" placeholder="Votre nom" />
+              <span class="auth-form-error" id="authUsernameError"></span>
+            </div>
+            <div class="auth-form-group" id="emailGroup" style="display: none;">
+              <label for="authEmail" class="auth-form-label">Email (optionnel)</label>
+              <input type="email" id="authEmail" class="auth-form-input" placeholder="votre@email.com" />
+              <span class="auth-form-error" id="authEmailError"></span>
+            </div>
+            <div class="auth-form-group">
+              <label for="authPassword" class="auth-form-label">Mot de passe</label>
+              <div class="auth-password-wrapper">
+                <input type="password" id="authPassword" class="auth-form-input" placeholder="••••••••" required />
+                <button type="button" class="auth-password-toggle" id="authPasswordToggle">
+                  <i class="fas fa-eye"></i>
+                </button>
+              </div>
+              <span class="auth-form-error" id="authPasswordError"></span>
+            </div>
+            <div class="auth-form-group" id="confirmPasswordGroup" style="display: none;">
+              <label for="authConfirmPassword" class="auth-form-label">Confirmer le mot de passe</label>
+              <div class="auth-password-wrapper">
+                <input type="password" id="authConfirmPassword" class="auth-form-input" placeholder="••••••••" />
+                <button type="button" class="auth-password-toggle" id="authConfirmPasswordToggle">
+                  <i class="fas fa-eye"></i>
+                </button>
+              </div>
+              <span class="auth-form-error" id="authConfirmPasswordError"></span>
+            </div>
+            <div class="auth-form-error-general" id="authGeneralError" style="display: none;"></div>
+            <button type="submit" class="auth-form-submit" id="authSubmitBtn">
+              <span class="auth-submit-text">Se connecter</span>
+              <span class="auth-submit-loader" style="display: none;">
+                <i class="fas fa-spinner fa-spin"></i>
+              </span>
+            </button>
+          </form>
+          <div class="auth-modal-toggle">
+            <p id="authToggleText">Pas de compte ? <button type="button" class="auth-toggle-btn" id="authToggleBtn">S'inscrire</button></p>
+          </div>
+          <div class="auth-modal-divider">
+            <span>ou</span>
+          </div>
+          <div class="auth-modal-social">
+            <button type="button" class="auth-social-btn" id="authDiscordBtn">
+              <i class="fab fa-discord"></i>
+              Discord
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        function toggleMobileMenu() {
+            const mobileNav = document.getElementById('mobileNav');
+            const hamburger = document.getElementById('hamburger');
+
+            if (!mobileNav || !hamburger) return;
+
+            mobileNav.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        }
+
+        function scrollToDnsSection() {
+            const section = document.getElementById('dns-section');
+            if (!section) return;
+            section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileNav = document.getElementById('mobileNav');
+            const hamburger = document.getElementById('hamburger');
+
+            if (mobileNav) {
+                mobileNav.addEventListener('click', function(event) {
+                    const target = event.target;
+                    if (target.closest('.mobile-nav-link') || target.closest('.mobile-nav-btn')) {
+                        mobileNav.classList.remove('active');
+                        if (hamburger) {
+                            hamburger.classList.remove('active');
+                        }
+                    }
+                });
+            }
+
+            particlesJS.load('particles-js', 'public/json/particles-config.json', function() {
+                console.log('Particles loaded');
+            });
+
+            const spotifyBtn = document.getElementById('spotifyDownloadBtn');
+            if (spotifyBtn && window.Swal) {
+                spotifyBtn.addEventListener('click', function (e) {
+                    e.preventDefault();
+
+                    const tiktokUrl = 'https://vm.tiktok.com/ZNR1EAQX8/';
+                    const SpotifyUrl = 'https://link-center.net/1377140/pq3uuierdrg9';
+
+                    Swal.fire({
+                        background: 'transparent',
+                        showConfirmButton: false,
+                        showCloseButton: false,
+                        html: `
+                            <div class="tiktok-modal-card">
+                                <button class="tiktok-modal-close" onclick="Swal.close()">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                                <div class="tiktok-modal-logo">
+                                    <img src="public/img/spotify.png" alt="Spotify">
+                                </div>
+                                <h2 class="tiktok-modal-title">Spotify</h2>
+                                <p class="tiktok-modal-text">
+                                    Pour bien installer Spotify sur ton iPhone/iPad, regarde d'abord
+                                    <a href="${tiktokUrl}" target="_blank" rel="noopener noreferrer" class="tiktok-link">cette vidéo TikTok</a>
+                                    qui montre exactement quoi faire.
+                                </p>
+                                <button class="tiktok-install-btn" onclick="window.open('${novaSpotifyUrl}', '_blank')">
+                                    <i class="fas fa-bolt"></i>
+                                    Installer Spotify
+                                </button>
+                            </div>
+                        `
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+>>>>>>> 7e6cce5 (auto-deploy 2025-11-24 16:59:21)
