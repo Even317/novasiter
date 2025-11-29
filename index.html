@@ -3,8 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accueil - Novaxell Premium</title>
-    <link rel="icon" href="public/img/logo.png" type="image/png">
+    <meta http-equiv="refresh" content="0; URL=/home.html">
+    <title>Novaxell</title>
+    <meta name="description" content="Dépannage, optimisation et vente de services à prix réduits, avec des astuces utiles pour vos appareils iOS et Android !">
+
+    <!-- OpenGraph (Google, Facebook, Discord, WhatsApp) -->
+    <meta property="og:title" content="Novaxell">
+    <meta property="og:description" content="Dépannage, optimisation et vente de services à prix réduits, avec des astuces utiles pour vos appareils iOS et Android !">
+    <meta property="og:image" content="https://novaxell.xyz/logo.png">
+    <meta property="og:url" content="https://novaxell.xyz">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Novaxell">
+    <meta name="twitter:description" content="Dépannage, optimisation et vente de services à prix réduits, avec des astuces utiles pour vos appareils iOS et Android !">
+    <meta name="twitter:image" content="https://novaxell.xyz/logo.png">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://novaxell.xyz/logo.png">
     
     <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -115,6 +132,7 @@
             filter: brightness(1.2);
         }
 
+        
         /* Desktop Navigation */
         .desktop-nav {
             display: none;
@@ -355,6 +373,18 @@
             margin-bottom: 1.5rem;
             line-height: 1.2;
             overflow: hidden;
+        }
+        .hero-image {
+            margin-top: 2rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        .hero-image img {
+            max-width: 220px;
+            height: auto;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
         }
         .hero-word-primary {
             display: inline-block;
@@ -719,7 +749,7 @@
     <!-- Header Unifié -->
     <header class="header">
         <div class="header-content">
-            <a href="index.html" class="logo">
+            <a href="/index.html" class="logo">
                 <i class="fas fa-bolt"></i>
                 Novaxell
             </a>
@@ -727,15 +757,15 @@
             <!-- Desktop Navigation -->
             <nav class="desktop-nav">
                 <div class="desktop-nav-links">
-                    <a href="index.html" class="desktop-nav-link active">
+                    <a href="/index.html" class="desktop-nav-link active">
                         <i class="fas fa-home"></i>
                         Accueil
                     </a>
-                    <a class="desktop-nav-link" href="shop.html">
+                    <a class="desktop-nav-link" href="/shop.html">
                         <i class="fas fa-shopping-bag"></i>
                         Boutique
                     </a>
-                    <a class="desktop-nav-link" href="spotify-guide.html">
+                    <a class="desktop-nav-link" href="/spotify-guide.html">
                         <i class="fab fa-apple"></i>
                         Spotify iOS
                     </a>
@@ -756,9 +786,9 @@
             <nav class="mobile-nav" id="mobileNav">
                 <div class="mobile-nav-content">
                     <div class="mobile-nav-links">
-                        <a href="index.html" class="mobile-nav-link active">Accueil</a>
-                        <a href="shop.html" class="mobile-nav-link">Boutique</a>
-                        <a href="spotify-guide.html" class="mobile-nav-link">Spotify iOS</a>
+                        <a href="/index.html" class="mobile-nav-link active">Accueil</a>
+                        <a href="/shop.html" class="mobile-nav-link">Boutique</a>
+                        <a href="/spotify-guide.html" class="mobile-nav-link">Spotify iOS</a>
                     </div>
                     <div class="mobile-nav-actions">
                         <button class="mobile-nav-btn mobile-nav-btn-secondary" onclick="openLoginModal()">Se Connecter</button>
@@ -778,7 +808,7 @@
                         <span class="hero-word-secondary">meilleurs services</span><br>
                         <span class="hero-word-tertiary">français</span>
                     </h1>
-                    <div class="hero-buttons">
+                                        <div class="hero-buttons">
                         <button class="btn-primary" onclick="window.location.href='shop.html'"><i class="fas fa-rocket"></i> Commencer Maintenant</button>
                     </div>
                 </div>
@@ -787,34 +817,34 @@
                 <h2 class="section-title">Pourquoi Choisir Novaxell ?</h2>
                 <div class="features-grid">
                     <div class="feature-card">
-                        <div class="feature-icon"><i class="fas fa-bolt"></i></div>
-                        <h3>Génération Rapide</h3>
-                        <p>Générez des comptes en quelques secondes seulement</p>
+                        <div class="feature-icon"><i class="fas fa-users"></i></div>
+                        <h3>Au service de la communauté</h3>
+                        <p>Astuces et conseils gratuits, partagés pour faire gagner du temps à tous</p>
                     </div>
                     <div class="feature-card">
-                        <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
-                        <h3>Sécurité Maximale</h3>
-                        <p>Tous les comptes sont vérifiés et sécurisés</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon"><i class="fas fa-crown"></i></div>
-                        <h3>Services Premium</h3>
-                        <p>Accès à plus de 50 services premium mondiaux</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon"><i class="fas fa-headset"></i></div>
-                        <h3>Support 24/7</h3>
-                        <p>Notre équipe est disponible pour vous aider</p>
+                        <div class="feature-icon"><i class="fas fa-layer-group"></i></div>
+                        <h3>Diversité des services</h3>
+                        <p>Grand choix à petit prix, avec de nouveaux services ajoutés souvent</p>
                     </div>
                     <div class="feature-card">
                         <div class="feature-icon"><i class="fas fa-check-circle"></i></div>
                         <h3>Garantie Qualité</h3>
-                        <p>Satisfaction garantie ou remboursement</p>
+                        <p>Commandes vérifiées. Satisfait ou remboursé, sans complications</p>
                     </div>
                     <div class="feature-card">
-                        <div class="feature-icon"><i class="fas fa-zap"></i></div>
-                        <h3>Mise à Jour Constante</h3>
-                        <p>Nouveaux services ajoutés régulièrement</p>
+                        <div class="feature-icon"><i class="fas fa-headset"></i></div>
+                        <h3>Support 24/7</h3>
+                        <p>Équipe disponible jour et nuit. Votre satisfaction passe avant tout</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-gift"></i></div>
+                        <h3>Cadeaux</h3>
+                        <p>Giveaways réguliers sur Discord. Rejoignez-nous pour gagner des cadeaux</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-arrows-rotate"></i></div>
+                        <h3>Mise à jour</h3>
+                        <p>Nous développons pleins de nouvelles astuces pour mieux vous aider. Merci de nous soutenir en utilisant nos services</p>
                     </div>
                 </div>
             </section>

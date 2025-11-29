@@ -13,10 +13,14 @@ const morgan = require('morgan');
 const fs = require('fs').promises;
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const paypal = require('@paypal/checkout-server-sdk');
 require('dotenv').config();
 
 const app = express();
 const server = http.createServer(app);
+// Middlewares de parsing du corps des requêtes (JSON / x-www-form-urlencoded)
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // Configuration pour servir les fichiers statiques
 app.use(express.static(path.join(__dirname, 'public'), {
@@ -76,6 +80,22 @@ async function saveUsers() {
   }
 }
 
+// === Configuration PayPal Checkout (biens & services) ===
+function getPayPalClient() {
+  const clientId = process.env.PAYPAL_CLIENT_ID || '';
+  const clientSecret = process.env.PAYPAL_CLIENT_SECRET || '';
+
+  const isProd = process.env.NODE_ENV === 'production';
+  const Environment = isProd
+    ? paypal.core.LiveEnvironment
+    : paypal.core.SandboxEnvironment;
+
+  const env = new Environment(clientId, clientSecret);
+  return new paypal.core.PayPalHttpClient(env);
+}
+
+const payPalClient = getPayPalClient();
+
 // Configuration de sécurité Helmet simplifiée pour le développement
 app.use(helmet({
   contentSecurityPolicy: false // Désactive temporairement la CSP stricte
@@ -102,8 +122,6 @@ const apiLimiter = rateLimit({
 app.use('/api', apiLimiter);
 app.use('/auth', apiLimiter);
 app.use('/paypal', apiLimiter);
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 app.use(session({
   secret: process.env.SESSION_SECRET || 'novaxell-secret-key',
@@ -123,13 +141,17 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// Enregistrer un ordre côté frontend pour suivi IPN
+// Enregistrer un ordre côté frontend (simple, sans logique F&F spécifique)
 app.post('/orders/register', async (req, res) => {
   try {
     const { orderId, discordTag, total, currency } = req.body || {};
     if (!orderId || !total) return res.status(400).json({ success: false, error: 'orderId et total requis' });
+
     const existing = orders.find(o => o.orderId === orderId);
-    if (existing) return res.json({ success: true });
+    if (existing) {
+      return res.json({ success: true });
+    }
+
     orders.push({
       orderId,
       discordTag: discordTag || null,
@@ -151,6 +173,62 @@ app.get('/orders/status', (req, res) => {
   const order = orders.find(o => o.orderId === orderId);
   if (!order) return res.json({ success: true, status: 'unknown' });
   res.json({ success: true, status: order.status, order });
+});
+
+// --- PayPal Checkout: création d'une commande ---
+app.post('/create-order', async (req, res) => {
+  try {
+    const { amount, currency } = req.body || {};
+    const numericAmount = parseFloat(amount);
+    if (!numericAmount || isNaN(numericAmount) || numericAmount <= 0) {
+      return res.status(400).json({ success: false, error: 'Montant invalide' });
+    }
+
+    const cur = (currency || 'EUR').toUpperCase();
+
+    const request = new paypal.orders.OrdersCreateRequest();
+    request.prefer('return=representation');
+    request.requestBody({
+      intent: 'CAPTURE',
+      purchase_units: [
+        {
+          amount: {
+            currency_code: cur,
+            value: numericAmount.toFixed(2)
+          }
+        }
+      ]
+    });
+
+    const order = await payPalClient.execute(request);
+    return res.json({ success: true, id: order.result.id });
+  } catch (err) {
+    console.error('Erreur /create-order PayPal:', err);
+    return res.status(500).json({ success: false, error: 'Erreur création commande PayPal' });
+  }
+});
+
+// --- PayPal Checkout: capture après paiement ---
+app.post('/capture-order', async (req, res) => {
+  try {
+    const { orderID } = req.body || {};
+    if (!orderID) {
+      return res.status(400).json({ success: false, error: 'orderID requis' });
+    }
+
+    const request = new paypal.orders.OrdersCaptureRequest(orderID);
+    request.requestBody({});
+    const capture = await payPalClient.execute(request);
+
+    return res.json({
+      success: true,
+      status: capture.result.status,
+      details: capture.result
+    });
+  } catch (err) {
+    console.error('Erreur /capture-order PayPal:', err);
+    return res.status(500).json({ success: false, error: 'Erreur capture paiement' });
+  }
 });
 
 function authenticateToken(req, res, next) {
